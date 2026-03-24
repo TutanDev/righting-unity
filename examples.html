@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Examples - Unity Framework</title>
+  <meta name="description" content="Real-world code examples for the Unity Framework packages: Architecture, Functional, and Utilities.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="examples.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="logo.png" alt="" class="nav-logo-icon" aria-hidden="true">
+        Unity Framework
+      </a>
+      <div class="nav-links">
+        <a href="#arch-examples" class="nav-link">Architecture</a>
+        <a href="#func-examples" class="nav-link">Functional</a>
+        <a href="#util-examples" class="nav-link">Utilities</a>
+        <a href="index.html" class="nav-link">Back to Home</a>
+      </div>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="examples-hero">
+    <div class="container">
+      <a href="index.html" class="breadcrumb">Home</a>
+      <h1 class="examples-hero-title">Examples</h1>
+      <p class="examples-hero-desc">Real-world code extracted from each package's documentation. Copy, paste, and build.</p>
+    </div>
+  </header>
+
+  <!-- Architecture Examples -->
+  <section class="examples-section" id="arch-examples">
+    <div class="container">
+      <div class="section-header section-header--arch">
+        <span class="package-label package-label--arch">com.tutan.architecture</span>
+        <h2>Architecture Examples</h2>
+      </div>
+
+      <!-- Example 1: Tag Your First Type -->
+      <article class="example">
+        <h3 class="example-title">Tag Your First Type</h3>
+        <p class="example-desc">Assign any class to a layer using shorthand attributes. The validator uses these to enforce topology rules.</p>
+        <div class="code-card code-card--arch">
+          <div class="code-card-header">
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-file">SessionManager.cs</span>
+          </div>
+<pre class="code-block"><code><span class="kw">using</span> Tutan.Architecture;
+
+[<span class="attr">Manager</span>]
+<span class="kw">public class</span> <span class="type">SessionManager</span>
+{
+    <span class="cmt">// Business logic for session lifecycle.</span>
+    <span class="cmt">// The [Manager] attribute tells the validator this type</span>
+    <span class="cmt">// lives in the Manager layer.</span>
+}
+
+<span class="cmt">// Shorthand attributes for all five layers:</span>
+<span class="cmt">// [Client], [Manager], [Engine], [ResourceAccess], [Resource]</span>
+
+<span class="cmt">// Verbose form is also available:</span>
+[<span class="attr">Layer</span>(ArchitectureLayer.Manager)]
+<span class="kw">public class</span> <span class="type">AnotherManager</span> { }</code></pre>
+        </div>
+      </article>
+
+      <!-- Example 2: Full Call Chain -->
+      <article class="example">
+        <h3 class="example-title">Full Call Chain Through Layers</h3>
+        <p class="example-desc">A Client calls a Manager, which orchestrates an Engine and ResourceAccess. Each layer only depends on the one below it.</p>
+        <div class="code-card code-card--arch">
+          <div class="code-card-header">
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-file">SessionCallChain.cs</span>
+          </div>
+<pre class="code-block"><code>[<span class="attr">Client</span>]
+<span class="kw">public class</span> <span class="type">LobbyClient</span>
+{
+    <span class="kw">private readonly</span> <span class="type">SessionManager</span> _sessionManager;
+
+    <span class="kw">public void</span> OnJoinPressed(<span class="type">string</span> roomCode)
+    {
+        _sessionManager.JoinSession(roomCode);
+    }
+}
+
+[<span class="attr">Manager</span>]
+<span class="kw">public class</span> <span class="type">SessionManager</span>
+{
+    <span class="kw">private readonly</span> <span class="type">ValidatingEngine</span> _validator;
+    <span class="kw">private readonly</span> <span class="type">SessionAccess</span> _sessionAccess;
+
+    <span class="kw">public void</span> JoinSession(<span class="type">string</span> roomCode)
+    {
+        <span class="kw">if</span> (_validator.IsValidRoomCode(roomCode))
+            _sessionAccess.Connect(roomCode);
+    }
+}
+
+[<span class="attr">Engine</span>]
+<span class="kw">public class</span> <span class="type">ValidatingEngine</span>
+{
+    <span class="kw">public bool</span> IsValidRoomCode(<span class="type">string</span> code)
+        => code.Length == <span class="num">6</span> && code.All(<span class="type">char</span>.IsLetterOrDigit);
+}
+
+[<span class="attr">ResourceAccess</span>]
+<span class="kw">public class</span> <span class="type">SessionAccess</span>
+{
+    <span class="kw">public void</span> Connect(<span class="type">string</span> roomCode) { <span class="cmt">/* network call */</span> }
+}</code></pre>
+        </div>
+      </article>
+
+      <!-- Example 3: Violation Detection -->
+      <article class="example">
+        <h3 class="example-title">Violation Detection</h3>
+        <p class="example-desc">The validator catches illegal dependencies. Here a Client skips the Manager layer and calls an Engine directly.</p>
+        <div class="code-card code-card--arch">
+          <div class="code-card-header">
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-file">Violation.cs</span>
+          </div>
+<pre class="code-block"><code>[<span class="attr">Client</span>]
+<span class="kw">public class</span> <span class="type">GameplayClient</span>
+{
+    <span class="cmt">// Violation: Client must not depend on Engine directly.</span>
+    <span class="cmt">// The closed architecture requires Client -> Manager -> Engine.</span>
+    <span class="kw">private readonly</span> <span class="type">ScoringEngine</span> _engine;
+}
+
+[<span class="attr">Engine</span>]
+<span class="kw">public class</span> <span class="type">ScoringEngine</span>
+{
+    <span class="kw">public int</span> Calculate() => <span class="num">42</span>;
+}
+
+<span class="cmt">// Validate Now outputs:</span>
+<span class="cmt">// [Error] ARCH001: disallowed dependency:</span>
+<span class="cmt">//   GameplayClient [Client] -> ScoringEngine [Engine] via Field</span></code></pre>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Functional Examples -->
+  <section class="examples-section examples-section--alt" id="func-examples">
+    <div class="container">
+      <div class="section-header section-header--func">
+        <span class="package-label package-label--func">com.tutan.functional</span>
+        <h2>Functional Examples</h2>
+      </div>
+
+      <!-- Example 1: Safe Component Lookup -->
+      <article class="example">
+        <h3 class="example-title">Safe Component Lookup</h3>
+        <p class="example-desc">Use <code>Optional&lt;T&gt;</code> to safely chain component lookups without null checks. Destroyed Unity objects are automatically treated as <code>None</code>.</p>
+        <div class="code-card code-card--func">
+          <div class="code-card-header">
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-file">HealthReader.cs</span>
+          </div>
+<pre class="code-block"><code><span class="kw">using</span> UnityEngine;
+<span class="kw">using</span> Tutan.Functional;
+<span class="kw">using static</span> Tutan.Functional.<span class="type">F</span>;
+
+<span class="kw">public class</span> <span class="type">HealthReader</span> : <span class="type">MonoBehaviour</span>
+{
+    [<span class="attr">SerializeField</span>] <span class="kw">private</span> <span class="type">GameObject</span> target;
+
+    <span class="kw">private void</span> Start()
+    {
+        <span class="type">Optional</span>&lt;<span class="type">Health</span>&gt; maybeHealth = Some(target)
+            .Then(go => go.GetComponent&lt;<span class="type">Health</span>&gt;());
+
+        <span class="kw">int</span> hp = maybeHealth
+            .Then(h => h.Current)
+            .Or(<span class="num">0</span>);
+
+        Debug.Log($<span class="str">"Current HP: {hp}"</span>);
+    }
+}</code></pre>
+        </div>
+      </article>
+
+      <!-- Example 2: UI Fallback -->
+      <article class="example">
+        <h3 class="example-title">UI Fallback When Data is Missing</h3>
+        <p class="example-desc">Chain <code>Filter</code>, <code>Then</code>, and <code>Or</code> to build a clean data pipeline for UI display with sensible defaults.</p>
+        <div class="code-card code-card--func">
+          <div class="code-card-header">
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-file">PlayerNameView.cs</span>
+          </div>
+<pre class="code-block"><code><span class="kw">public class</span> <span class="type">PlayerNameView</span> : <span class="type">MonoBehaviour</span>
+{
+    [<span class="attr">SerializeField</span>] <span class="kw">private</span> <span class="type">TMP_Text</span> label;
+
+    <span class="kw">public void</span> Render(<span class="type">Optional</span>&lt;<span class="type">string</span>&gt; playerName)
+    {
+        label.text = playerName
+            .Filter(name => name.Length > <span class="num">0</span>)
+            .Then(name => $<span class="str">"Pilot: {name}"</span>)
+            .Or(<span class="str">"Pilot: Guest"</span>);
+    }
+}</code></pre>
+        </div>
+      </article>
+
+      <!-- Example 3: Result Pipeline -->
+      <article class="example">
+        <h3 class="example-title">Result Pipeline with Error Handling</h3>
+        <p class="example-desc">Chain operations with <code>Result&lt;T&gt;</code> and handle all errors once at the boundary. Parse, validate, and apply in a single composable pipeline.</p>
+        <div class="code-card code-card--func">
+          <div class="code-card-header">
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-file">PlayerBootstrap.cs</span>
+          </div>
+<pre class="code-block"><code><span class="kw">public class</span> <span class="type">PlayerBootstrap</span> : <span class="type">MonoBehaviour</span>
+{
+    [<span class="attr">SerializeField</span>] <span class="kw">private string</span> configJson;
+
+    <span class="kw">public void</span> Initialize()
+    {
+        <span class="type">Result</span>&lt;<span class="type">PlayerConfig</span>&gt; result =
+            Try(() => JsonUtility.FromJson&lt;<span class="type">PlayerConfig</span>&gt;(configJson))
+                .Filter(cfg => cfg != <span class="kw">null</span>)
+                .Then(cfg => Validate(cfg));
+
+        result.Match(
+            onError: e => Debug.LogError($<span class="str">"Bootstrap failed: {e.Message}"</span>),
+            onSuccess: cfg => Debug.Log($<span class="str">"Player initialized: {cfg.DisplayName}"</span>));
+    }
+
+    <span class="kw">private</span> <span class="type">Result</span>&lt;<span class="type">PlayerConfig</span>&gt; Validate(<span class="type">PlayerConfig</span> cfg)
+    {
+        <span class="kw">if</span> (<span class="type">string</span>.IsNullOrWhiteSpace(cfg.DisplayName))
+            <span class="kw">return</span> Error(<span class="str">"DisplayName is required"</span>);
+
+        <span class="kw">return</span> Success(cfg);
+    }
+}</code></pre>
+        </div>
+      </article>
+
+      <!-- Example 4: Resource Loading -->
+      <article class="example">
+        <h3 class="example-title">Safe Resource Loading</h3>
+        <p class="example-desc"><code>Success()</code> automatically returns an error for null references, including destroyed Unity objects, so missing assets surface as <code>Result</code> errors.</p>
+        <div class="code-card code-card--func">
+          <div class="code-card-header">
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-file">EnemyPrefabLoader.cs</span>
+          </div>
+<pre class="code-block"><code><span class="kw">public class</span> <span class="type">EnemyPrefabLoader</span>
+{
+    <span class="kw">public</span> <span class="type">Result</span>&lt;<span class="type">GameObject</span>&gt; LoadEnemy(<span class="type">string</span> path)
+    {
+        <span class="kw">return</span> Success(Resources.Load&lt;<span class="type">GameObject</span>&gt;(path))
+            .Then(prefab => Object.Instantiate(prefab));
+    }
+}
+
+<span class="cmt">// Usage:</span>
+<span class="cmt">// loader.LoadEnemy("Enemies/Goblin").Match(</span>
+<span class="cmt">//     onError: e => Debug.LogError(e.Message),</span>
+<span class="cmt">//     onSuccess: enemy => PlaceInWorld(enemy));</span></code></pre>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Utilities Examples -->
+  <section class="examples-section" id="util-examples">
+    <div class="container">
+      <div class="section-header section-header--util">
+        <span class="package-label package-label--util">com.tutan.utilities</span>
+        <h2>Utilities Examples</h2>
+      </div>
+
+      <!-- Example 1: MessageBus Pub/Sub -->
+      <article class="example">
+        <h3 class="example-title">MessageBus: Pub/Sub</h3>
+        <p class="example-desc">Define a struct message, subscribe in one component, publish from another. The publisher has no reference to subscribers.</p>
+        <div class="code-card code-card--util">
+          <div class="code-card-header">
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-file">TeleportSystem.cs</span>
+          </div>
+<pre class="code-block"><code><span class="cmt">// Define a message — must be unmanaged struct</span>
+<span class="kw">public struct</span> <span class="type">PlayerTeleported</span> : <span class="type">IMessage</span>
+{
+    <span class="kw">public</span> <span class="type">Vector3</span> Origin;
+    <span class="kw">public</span> <span class="type">Vector3</span> Destination;
+    <span class="kw">public float</span> Duration;
+}
+
+<span class="cmt">// Subscriber — reacts to teleport events</span>
+<span class="kw">public class</span> <span class="type">FadeController</span> : <span class="type">MonoBehaviour</span>
+{
+    <span class="type">SubscriptionToken</span> _token;
+
+    <span class="kw">void</span> OnEnable()
+        => _token = EventBus.Instance
+            .Subscribe&lt;<span class="type">PlayerTeleported</span>&gt;(OnTeleported);
+
+    <span class="kw">void</span> OnDisable()
+        => EventBus.Instance.Unsubscribe(_token);
+
+    <span class="kw">void</span> OnTeleported(<span class="kw">ref</span> <span class="type">PlayerTeleported</span> msg)
+        => StartFade(msg.Duration);
+}
+
+<span class="cmt">// Publisher — no reference to FadeController</span>
+<span class="kw">public class</span> <span class="type">TeleportManager</span> : <span class="type">MonoBehaviour</span>
+{
+    <span class="kw">public void</span> ExecuteTeleport(<span class="type">Vector3</span> origin, <span class="type">Vector3</span> dest, <span class="kw">float</span> dur)
+    {
+        <span class="kw">var</span> msg = <span class="kw">new</span> <span class="type">PlayerTeleported</span>
+            { Origin = origin, Destination = dest, Duration = dur };
+        EventBus.Instance.Publish(<span class="kw">ref</span> msg);
+    }
+}</code></pre>
+        </div>
+      </article>
+
+      <!-- Example 2: Queued Dispatch from Worker Thread -->
+      <article class="example">
+        <h3 class="example-title">MessageBus: Thread-Safe Enqueue</h3>
+        <p class="example-desc">Enqueue messages from worker threads. They are dispatched safely on the main thread during <code>DrainQueues()</code>.</p>
+        <div class="code-card code-card--util">
+          <div class="code-card-header">
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-file">VideoStream.cs</span>
+          </div>
+<pre class="code-block"><code><span class="kw">public struct</span> <span class="type">FrameDecoded</span> : <span class="type">IMessage</span>
+{
+    <span class="kw">public int</span> FrameIndex;
+    <span class="kw">public int</span> Width, Height;
+}
+
+<span class="cmt">// Called on a network/decode thread — NOT the main thread</span>
+<span class="kw">public class</span> <span class="type">VideoStreamReceiver</span>
+{
+    <span class="kw">void</span> OnFrameReady(<span class="kw">int</span> index, <span class="kw">int</span> w, <span class="kw">int</span> h)
+    {
+        <span class="kw">var</span> msg = <span class="kw">new</span> <span class="type">FrameDecoded</span>
+            { FrameIndex = index, Width = w, Height = h };
+
+        <span class="cmt">// Thread-safe. Dispatched on main thread next frame.</span>
+        EventBus.Instance.Enqueue(msg);
+    }
+}
+
+<span class="cmt">// Main-thread subscriber — safe to touch Unity API</span>
+<span class="kw">public class</span> <span class="type">VideoTextureUpdater</span> : <span class="type">MonoBehaviour</span>
+{
+    <span class="type">SubscriptionToken</span> _token;
+    <span class="kw">void</span> OnEnable()  => _token = EventBus.Instance
+        .Subscribe&lt;<span class="type">FrameDecoded</span>&gt;(OnFrame);
+    <span class="kw">void</span> OnDisable() => EventBus.Instance.Unsubscribe(_token);
+
+    <span class="kw">void</span> OnFrame(<span class="kw">ref</span> <span class="type">FrameDecoded</span> msg)
+        => UpdateTexture(msg.FrameIndex, msg.Width, msg.Height);
+}</code></pre>
+        </div>
+      </article>
+
+      <!-- Example 3: Timer -->
+      <article class="example">
+        <h3 class="example-title">Timer: One-Shot and Repeating</h3>
+        <p class="example-desc">Schedule callbacks with handle-based lifecycle. Cancel safely at any time. Supports scaled and unscaled time.</p>
+        <div class="code-card code-card--util">
+          <div class="code-card-header">
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-file">TimerExamples.cs</span>
+          </div>
+<pre class="code-block"><code><span class="cmt">// One-shot respawn delay</span>
+<span class="kw">public class</span> <span class="type">PlayerRespawnController</span> : <span class="type">MonoBehaviour</span>
+{
+    <span class="type">TimerHandle</span> _handle;
+
+    <span class="kw">public void</span> OnPlayerDied()
+    {
+        _handle = Timer.Instance.Schedule(<span class="num">3f</span>, Respawn);
+    }
+
+    <span class="kw">void</span> Respawn() { _handle = <span class="type">TimerHandle</span>.Invalid; }
+}
+
+<span class="cmt">// Repeating tick — always cancel in OnDisable</span>
+<span class="kw">public class</span> <span class="type">CooldownBar</span> : <span class="type">MonoBehaviour</span>
+{
+    <span class="type">TimerHandle</span> _tick;
+
+    <span class="kw">void</span> OnEnable()
+        => _tick = Timer.Instance
+            .Schedule(<span class="type">TimerParams</span>.Repeat(<span class="num">0.05f</span>), UpdateBar);
+
+    <span class="kw">void</span> OnDisable()
+    {
+        Timer.Instance.Cancel(_tick);
+        _tick = <span class="type">TimerHandle</span>.Invalid;
+    }
+}
+
+<span class="cmt">// Unscaled time — fires even when Time.timeScale == 0</span>
+<span class="kw">var</span> p = <span class="type">TimerParams</span>.Default
+    .WithDelay(<span class="num">5f</span>)
+    .WithUnscaledTime(<span class="kw">true</span>);
+<span class="kw">var</span> handle = Timer.Instance.Schedule(p, OnCountdownDone);</code></pre>
+        </div>
+      </article>
+
+      <!-- Example 4: Persistence -->
+      <article class="example">
+        <h3 class="example-title">Persistence: Save and Load</h3>
+        <p class="example-desc">Backend-agnostic serialization. Swap between JSON files and PlayerPrefs via a ScriptableObject setting.</p>
+        <div class="code-card code-card--util">
+          <div class="code-card-header">
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-file">SaveSystem.cs</span>
+          </div>
+<pre class="code-block"><code>[<span class="type">System</span>.Serializable]
+<span class="kw">public class</span> <span class="type">PlayerStats</span>
+{
+    <span class="kw">public int</span> Level;
+    <span class="kw">public int</span> Gold;
+    <span class="kw">public float</span> PlayTime;
+}
+
+<span class="cmt">// Save</span>
+<span class="kw">var</span> stats = <span class="kw">new</span> <span class="type">PlayerStats</span> { Level = <span class="num">5</span>, Gold = <span class="num">1200</span>, PlayTime = <span class="num">3600f</span> };
+PersistenceService.Instance.Save(<span class="str">"player.stats"</span>, stats);
+
+<span class="cmt">// Load</span>
+<span class="kw">if</span> (PersistenceService.Instance.TryLoad&lt;<span class="type">PlayerStats</span>&gt;(<span class="str">"player.stats"</span>, <span class="kw">out var</span> s))
+    Debug.Log($<span class="str">"Welcome back, Level {s.Level}!"</span>);
+
+<span class="cmt">// Check and delete</span>
+<span class="kw">bool</span> exists = PersistenceService.Instance.Exists(<span class="str">"player.stats"</span>);
+PersistenceService.Instance.Delete(<span class="str">"player.stats"</span>);</code></pre>
+        </div>
+      </article>
+
+      <!-- Example 5: Reporter -->
+      <article class="example">
+        <h3 class="example-title">Reporter: Logging and Scoped Timing</h3>
+        <p class="example-desc">Leveled logging with tag filtering and compile-time stripping. Scoped timing measures code blocks with zero allocation.</p>
+        <div class="code-card code-card--util">
+          <div class="code-card-header">
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-file">ReporterExamples.cs</span>
+          </div>
+<pre class="code-block"><code><span class="cmt">// Leveled logging — Trace and Debug are stripped from builds</span>
+Reporter.Trace(<span class="str">"Frame tick"</span>, tag: <span class="str">"Loop"</span>);
+Reporter.Info($<span class="str">"Player joined: {name}"</span>, tag: <span class="str">"Session"</span>);
+Reporter.Warn(<span class="str">"Pool running low"</span>, tag: <span class="str">"Audio"</span>);
+Reporter.Error(<span class="str">"Connection lost"</span>, tag: <span class="str">"Network"</span>);
+
+<span class="cmt">// Tag filtering — show only messages tagged "Network"</span>
+Reporter.TagFilter = <span class="str">"Network"</span>;
+
+<span class="cmt">// Scoped timing — zero-allocation, stack-allocated</span>
+<span class="kw">using var</span> _ = Reporter.Time(<span class="str">"DecodeFrame"</span>, <span class="str">"Streaming"</span>);
+<span class="cmt">// ... expensive work ...</span>
+<span class="cmt">// On dispose: logs elapsed ms and records in MetricRegistry</span>
+
+<span class="cmt">// Query metrics</span>
+<span class="kw">var</span> snapshot = Reporter.GetMetric(<span class="str">"DecodeFrame"</span>);
+<span class="kw">if</span> (snapshot.HasValue)
+    Debug.Log($<span class="str">"Avg: {snapshot.Value.AvgMs:F2}ms"</span>);</code></pre>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="logo.png" alt="" class="nav-logo-icon" aria-hidden="true">
+        <span>Unity Framework</span>
+      </div>
+      <p class="footer-copy">
+        Built by <a href="https://github.com/TutanDev" target="_blank" rel="noopener noreferrer">TutanDev</a>.
+        Compatible with Unity 6.
+        Licensed under MIT.
+      </p>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>

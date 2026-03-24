@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unity Framework - Professional Unity Packages</title>
+  <meta name="description" content="Three Unity packages for building professional projects using volatility-based architecture. Architecture enforcement, functional primitives, and infrastructure utilities.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#hero" class="nav-logo">
+        <img src="logo.png" alt="" class="nav-logo-icon" aria-hidden="true">
+        Unity Framework
+      </a>
+      <div class="nav-links">
+        <a href="#architecture" class="nav-link">Architecture</a>
+        <a href="#functional" class="nav-link">Functional</a>
+        <a href="#utilities" class="nav-link">Utilities</a>
+        <a href="examples.html" class="nav-link nav-link--examples">Examples</a>
+      </div>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero" id="hero">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="container hero-content">
+      <div class="hero-badge">Unity 6 Compatible</div>
+      <h1 class="hero-title">
+        Build Unity Projects<br>
+        <span class="hero-title-accent">The Right Way</span>
+      </h1>
+      <p class="hero-subtitle">
+        Three packages implementing volatility-based architecture for professional Unity development.
+        Structure, safety, and services — all in one framework.
+      </p>
+      <div class="hero-actions">
+        <a href="#architecture" class="btn btn--primary">Explore Packages</a>
+        <a href="examples.html" class="btn btn--ghost">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          View Examples
+        </a>
+      </div>
+      <div class="hero-packages">
+        <a href="#architecture" class="hero-package hero-package--arch">
+          <span class="hero-package-dot" aria-hidden="true"></span>
+          Architecture
+        </a>
+        <a href="#functional" class="hero-package hero-package--func">
+          <span class="hero-package-dot" aria-hidden="true"></span>
+          Functional
+        </a>
+        <a href="#utilities" class="hero-package hero-package--util">
+          <span class="hero-package-dot" aria-hidden="true"></span>
+          Utilities
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Architecture Package -->
+  <section class="package" id="architecture">
+    <div class="container">
+      <div class="package-header">
+        <span class="package-label package-label--arch">com.tutan.architecture</span>
+        <h2 class="package-title">Architecture</h2>
+        <p class="package-desc">
+          Enforce a closed 5-layer architecture at compile time.
+          No upward calls. No sideways dependencies. Just clean, validated structure.
+        </p>
+      </div>
+      <div class="arch-layout">
+        <div class="feature-list">
+          <div class="feature">
+            <div class="feature-icon feature-icon--arch" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            </div>
+            <div>
+              <h3 class="feature-name">5-Layer Topology</h3>
+              <p class="feature-desc">Client, Manager, Engine, ResourceAccess, Resource. Each layer can only call the one below it.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon feature-icon--arch" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            </div>
+            <div>
+              <h3 class="feature-name">Attribute-Based Tagging</h3>
+              <p class="feature-desc">Mark classes with <code>[Manager]</code>, <code>[Engine]</code>, <code>[Client]</code> and let the framework validate your topology.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon feature-icon--arch" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div>
+              <h3 class="feature-name">Use Case Tracing</h3>
+              <p class="feature-desc"><code>[UseCase("PlaceOrder")]</code> on Manager methods traces call chains through every layer.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon feature-icon--arch" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            </div>
+            <div>
+              <h3 class="feature-name">Message Flow Docs</h3>
+              <p class="feature-desc"><code>[Publishes]</code> and <code>[SubscribesTo]</code> document event flow without runtime coupling.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Layer Diagram -->
+      <div class="layer-diagram" aria-label="Architecture layer diagram showing the 5 layers">
+        <div class="layer layer--client">
+          <span class="layer-name">Client</span>
+          <span class="layer-arrow" aria-hidden="true">&#8595;</span>
+        </div>
+        <div class="layer layer--manager">
+          <span class="layer-name">Manager</span>
+          <span class="layer-arrow" aria-hidden="true">&#8595;</span>
+        </div>
+        <div class="layer layer--engine">
+          <span class="layer-name">Engine</span>
+          <span class="layer-arrow" aria-hidden="true">&#8595;</span>
+        </div>
+        <div class="layer layer--access">
+          <span class="layer-name">ResourceAccess</span>
+          <span class="layer-arrow" aria-hidden="true">&#8595;</span>
+        </div>
+        <div class="layer layer--resource">
+          <span class="layer-name">Resource</span>
+        </div>
+        <div class="layer-sidebar">
+          <span class="layer-sidebar-label">Utilities</span>
+          <span class="layer-sidebar-note">Available to all layers</span>
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Functional Package -->
+  <section class="package package--alt" id="functional">
+    <div class="container">
+      <div class="package-header">
+        <span class="package-label package-label--func">com.tutan.functional</span>
+        <h2 class="package-title">Functional</h2>
+        <p class="package-desc">
+          Null-safe, railway-oriented types for Unity.
+          <code>Optional&lt;T&gt;</code>, <code>Result&lt;T&gt;</code>, and composable extensions that make errors impossible to ignore.
+        </p>
+      </div>
+      <div class="package-grid package-grid--reverse">
+        <div class="code-card code-card--func">
+          <div class="code-card-header">
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-dot" aria-hidden="true"></span>
+            <span class="code-card-file">Example.cs</span>
+          </div>
+<pre class="code-block"><code><span class="cmt">// Optional&lt;T&gt; — no more null checks</span>
+<span class="type">Optional</span>&lt;<span class="type">Player</span>&gt; player = FindPlayer(id);
+
+player
+    .Then(p => p.Inventory)
+    .Then(inv => inv.GetWeapon(<span class="str">"sword"</span>))
+    .Match(
+        onNone: () => Log(<span class="str">"No sword found"</span>),
+        onSome: sword => Equip(sword)
+    );
+
+<span class="cmt">// Result&lt;T&gt; — errors you can't ignore</span>
+<span class="type">Result</span>&lt;<span class="type">Order</span>&gt; result = PlaceOrder(request);
+
+result
+    .Then(order => Validate(order))
+    .Then(order => Save(order))
+    .Match(
+        onError: err => Reporter.Error(err.Message),
+        onSuccess: order => Confirm(order)
+    );</code></pre>
+        </div>
+        <div class="feature-list">
+          <div class="feature">
+            <div class="feature-icon feature-icon--func" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+              <h3 class="feature-name">Optional&lt;T&gt;</h3>
+              <p class="feature-desc">Null-safe value wrapper. <code>IsSome</code>/<code>IsNone</code>, pattern matching, implicit conversions from <code>T</code> and <code>None</code>.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon feature-icon--func" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+            </div>
+            <div>
+              <h3 class="feature-name">Result&lt;T&gt;</h3>
+              <p class="feature-desc">Success-or-error railway. Chain operations with <code>.Then()</code>, recover with <code>.Or()</code> and <code>.OrElse()</code>.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon feature-icon--func" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            </div>
+            <div>
+              <h3 class="feature-name">Error Type</h3>
+              <p class="feature-desc">Immutable, composable errors with inner error chains. Implicit conversion from <code>string</code>.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon feature-icon--func" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <h3 class="feature-name">Async Support</h3>
+              <p class="feature-desc">Full async/await support for both <code>Optional</code> and <code>Result</code>. Chain async operations seamlessly.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Utilities Package -->
+  <section class="package" id="utilities">
+    <div class="container">
+      <div class="package-header">
+        <span class="package-label package-label--util">com.tutan.utilities</span>
+        <h2 class="package-title">Utilities</h2>
+        <p class="package-desc">
+          Five domain-agnostic services that every Unity project needs.
+          Drop in the installer, configure via ScriptableObjects, and ship.
+        </p>
+      </div>
+
+      <div class="util-grid">
+        <!-- MessageBus -->
+        <div class="util-card">
+          <div class="util-card-icon util-card-icon--util" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <h3 class="util-card-title">MessageBus</h3>
+          <p class="util-card-desc">Zero-allocation pub/sub. Struct messages passed by ref. Immediate and queued dispatch. Thread-safe enqueue for worker threads.</p>
+          <div class="util-card-tags">
+            <span class="tag">CommandBus</span>
+            <span class="tag">EventBus</span>
+            <span class="tag">Zero GC</span>
+          </div>
+        </div>
+
+        <!-- Reporter -->
+        <div class="util-card">
+          <div class="util-card-icon util-card-icon--util" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </div>
+          <h3 class="util-card-title">Reporter</h3>
+          <p class="util-card-desc">Leveled logging with tag filtering and scoped timing. Compile-time stripping via <code>[Conditional]</code>. Built-in metric accumulation.</p>
+          <div class="util-card-tags">
+            <span class="tag">5 Levels</span>
+            <span class="tag">Tag Filter</span>
+            <span class="tag">Metrics</span>
+          </div>
+        </div>
+
+        <!-- Timer -->
+        <div class="util-card">
+          <div class="util-card-icon util-card-icon--util" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <h3 class="util-card-title">Timer</h3>
+          <p class="util-card-desc">Handle-based callback scheduler. One-shot and repeating. Scaled or unscaled time. Pool-based with generation counters for safe cancellation.</p>
+          <div class="util-card-tags">
+            <span class="tag">Pooled</span>
+            <span class="tag">Handle-Safe</span>
+            <span class="tag">Repeating</span>
+          </div>
+        </div>
+
+        <!-- AudioPlayer -->
+        <div class="util-card">
+          <div class="util-card-icon util-card-icon--util" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
+          </div>
+          <h3 class="util-card-title">AudioPlayer</h3>
+          <p class="util-card-desc">Pooled AudioSource playback with fluent <code>SoundParams</code>. Spatial audio, steal-oldest overflow, handle-based lifecycle.</p>
+          <div class="util-card-tags">
+            <span class="tag">Pooled</span>
+            <span class="tag">Spatial</span>
+            <span class="tag">Fluent API</span>
+          </div>
+        </div>
+
+        <!-- Persistence -->
+        <div class="util-card">
+          <div class="util-card-icon util-card-icon--util" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+          </div>
+          <h3 class="util-card-title">Persistence</h3>
+          <p class="util-card-desc">Backend-agnostic save/load. <code>Save&lt;T&gt;</code>, <code>TryLoad&lt;T&gt;</code>. Swap between JSON files and PlayerPrefs via settings.</p>
+          <div class="util-card-tags">
+            <span class="tag">JSON</span>
+            <span class="tag">PlayerPrefs</span>
+            <span class="tag">Pluggable</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Examples Section -->
+  <section class="examples-cta" id="examples">
+    <div class="container examples-cta-inner">
+      <h2 class="examples-cta-title">See It In Action</h2>
+      <p class="examples-cta-desc">
+        Real-world code examples extracted from each package's documentation.
+        Layer enforcement, null-safe pipelines, zero-allocation messaging, and more.
+      </p>
+      <div class="examples-cta-cards">
+        <a href="examples.html#arch-examples" class="examples-card examples-card--arch">
+          <h3>Architecture</h3>
+          <p>Layer tagging, topology validation, use case tracing, and violation detection.</p>
+        </a>
+        <a href="examples.html#func-examples" class="examples-card examples-card--func">
+          <h3>Functional</h3>
+          <p>Safe component lookups, result pipelines, error composition, and UI fallbacks.</p>
+        </a>
+        <a href="examples.html#util-examples" class="examples-card examples-card--util">
+          <h3>Utilities</h3>
+          <p>Pub/sub messaging, handle-based timers, pooled audio, and data persistence.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="logo.png" alt="" class="nav-logo-icon" aria-hidden="true">
+        <span>Unity Framework</span>
+      </div>
+      <p class="footer-copy">
+        Built by <a href="https://github.com/TutanDev" target="_blank" rel="noopener noreferrer">TutanDev</a>.
+        Compatible with Unity 6.
+        Licensed under MIT.
+      </p>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>

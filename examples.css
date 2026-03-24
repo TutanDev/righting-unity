@@ -1,0 +1,103 @@
+/* ================================================================
+   Examples Page — Additional Styles
+   Inherits all base styles from styles.css
+   ================================================================ */
+
+/* --- Examples Hero --- */
+.examples-hero {
+  padding: 120px 0 60px;
+  border-bottom: 1px solid var(--border);
+}
+
+.breadcrumb {
+  display: inline-block;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  transition: color 0.2s;
+}
+
+.breadcrumb:hover { color: var(--text-secondary); }
+
+.breadcrumb::before {
+  content: "\2190 ";
+}
+
+.examples-hero-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+
+.examples-hero-desc {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 560px;
+  line-height: 1.7;
+}
+
+/* --- Examples Sections --- */
+.examples-section {
+  padding: 80px 0;
+  border-top: 1px solid var(--border);
+}
+
+.examples-section--alt {
+  background: var(--bg-base);
+}
+
+.section-header {
+  margin-bottom: 48px;
+}
+
+.section-header h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-top: 12px;
+}
+
+/* --- Individual Example --- */
+.example {
+  margin-bottom: 48px;
+}
+
+.example:last-child {
+  margin-bottom: 0;
+}
+
+.example-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.example-desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 20px;
+  max-width: 700px;
+}
+
+.example-desc code {
+  color: var(--text-primary);
+  background: var(--surface);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 0.85em;
+}
+
+/* Code cards on examples page get slightly more max-width */
+.examples-section .code-card {
+  max-width: 780px;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .examples-hero { padding: 100px 0 40px; }
+  .examples-hero-title { font-size: 2rem; }
+  .examples-section { padding: 56px 0; }
+  .example { margin-bottom: 36px; }
+}
