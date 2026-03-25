@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Functional — Unity Framework</title>
+  <meta name="description" content="UP-Functional: Optional&lt;T&gt;, Result&lt;T&gt;, and composable functional primitives for null-safe, error-safe Unity code.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/styles.css">
+  <link rel="stylesheet" href="src/docs.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/favicon/favicon-32x32.png" alt="" class="nav-logo-icon" aria-hidden="true">
+        Unity Framework
+      </a>
+      <div class="nav-links">
+        <a href="architecture.html" class="nav-link">Architecture</a>
+        <a href="functional.html" class="nav-link" style="color:var(--func-color)">Functional</a>
+        <a href="utilities.html" class="nav-link">Utilities</a>
+      </div>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="docs-shell">
+
+    <!-- Sidebar -->
+    <aside class="docs-sidebar" aria-label="Documentation navigation">
+      <div class="sidebar-header">
+        <a href="index.html" class="sidebar-back">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+          Back to home
+        </a>
+        <span class="sidebar-pkg-id sidebar-pkg-id--func">com.tutan.functional</span>
+        <div class="sidebar-pkg-name">Functional</div>
+      </div>
+      <nav class="sidebar-nav" aria-label="Page sections">
+        <a href="#getting-started" class="sidebar-direct" data-pkg="func">Getting Started</a>
+
+        <div class="sidebar-group open">
+          <button class="sidebar-group-btn" aria-expanded="true">
+            Guides
+            <svg class="sidebar-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="sidebar-items">
+            <a href="#guide-optional" class="sidebar-link" data-pkg="func">Optional&lt;T&gt;</a>
+            <a href="#guide-result" class="sidebar-link" data-pkg="func">Result&lt;T&gt;</a>
+            <a href="#guide-error" class="sidebar-link" data-pkg="func">The Error Type</a>
+            <a href="#guide-validation" class="sidebar-link" data-pkg="func">Validation Pipelines</a>
+            <a href="#guide-async" class="sidebar-link" data-pkg="func">Async Support</a>
+            <a href="#guide-unity" class="sidebar-link" data-pkg="func">Unity Integration</a>
+          </div>
+        </div>
+
+        <div class="sidebar-group">
+          <button class="sidebar-group-btn" aria-expanded="false">
+            API Reference
+            <svg class="sidebar-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="sidebar-items">
+            <a href="#api-optional" class="sidebar-link" data-pkg="func">Optional&lt;T&gt;</a>
+            <a href="#api-result" class="sidebar-link" data-pkg="func">Result&lt;T&gt;</a>
+            <a href="#api-error" class="sidebar-link" data-pkg="func">Error</a>
+            <a href="#api-validator" class="sidebar-link" data-pkg="func">Validator&lt;T&gt;</a>
+            <a href="#api-f" class="sidebar-link" data-pkg="func">F Module</a>
+            <a href="#api-extensions" class="sidebar-link" data-pkg="func">Extensions</a>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main content -->
+    <main class="docs-main">
+
+      <!-- ── Getting Started Hero ── -->
+      <section class="docs-hero" id="getting-started">
+        <div class="docs-hero-glow" style="background:radial-gradient(ellipse, var(--func-glow) 0%, transparent 70%)" aria-hidden="true"></div>
+        <span class="docs-hero-badge docs-hero-badge--func">com.tutan.functional · v0.1.0</span>
+        <h1 class="docs-hero-title">Null-Safe. Error-Safe.<br>Composable.</h1>
+        <p class="docs-hero-desc">
+          UP-Functional gives you <code>Optional&lt;T&gt;</code>, <code>Result&lt;T&gt;</code>, and composable extension methods that make absent values and errors impossible to ignore — without exceptions controlling normal flow.
+        </p>
+        <div class="docs-hero-stats">
+          <div>
+            <span class="docs-stat-value" style="color:var(--func-color)">3</span>
+            <span class="docs-stat-label">Core Types</span>
+          </div>
+          <div>
+            <span class="docs-stat-value" style="color:var(--func-color)">30+</span>
+            <span class="docs-stat-label">Extensions</span>
+          </div>
+          <div>
+            <span class="docs-stat-value" style="color:var(--func-color)">Full</span>
+            <span class="docs-stat-label">Async Support</span>
+          </div>
+          <div>
+            <span class="docs-stat-value" style="color:var(--func-color)">Unity 6</span>
+            <span class="docs-stat-label">Target</span>
+          </div>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-num" style="border-color:var(--func-color);color:var(--func-color)">1</div>
+            <div class="step-body">
+              <div class="step-title">Install the package</div>
+              <div class="step-desc">Open <strong>Window → Package Manager</strong>, click <strong>+</strong> → <em>Add package from disk…</em>, navigate to <code>Packages/com.tutan.functional/package.json</code>.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" style="border-color:var(--func-color);color:var(--func-color)">2</div>
+            <div class="step-body">
+              <div class="step-title">Import the F module</div>
+              <div class="step-desc">Add <code>using static Tutan.Functional.F;</code> to any file to bring <code>Some()</code>, <code>None</code>, <code>Success()</code>, <code>Error()</code>, and <code>Try()</code> into scope.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" style="border-color:var(--func-color);color:var(--func-color)">3</div>
+            <div class="step-body">
+              <div class="step-title">Replace your first null check</div>
+              <div class="step-desc">Change <code>go.GetComponent&lt;Health&gt;()</code> to <code>go.LookupComponent&lt;Health&gt;()</code> and chain <code>.Then()</code>, <code>.Or()</code>, and <code>.Match()</code> instead of null guards.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="docs-content">
+
+        <!-- ── Guide: Optional<T> ── -->
+        <section class="docs-section" id="guide-optional">
+          <div class="section-eyebrow">Guides</div>
+          <h2 class="section-title">Optional&lt;T&gt;</h2>
+          <p class="section-intro">
+            <code>Optional&lt;T&gt;</code> represents a value that might exist (<code>Some</code>) or might be missing (<code>None</code>). It replaces null with explicit semantics and eliminates null-reference exceptions at API boundaries.
+          </p>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Creating Optional values</h3>
+            <p class="prose">Use <code>Some(value)</code> to wrap a value, or <code>None</code> to represent absence. Both implicitly convert to <code>Optional&lt;T&gt;</code>. <code>Some()</code> treats destroyed Unity objects and null references as <code>None</code> automatically.</p>
+            <div class="code-card code-card--func">
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">Example.cs</span></div>
+<pre class="code-block"><code><span class="kw">using static</span> Tutan.Functional.F;
+
+<span class="type">Optional</span>&lt;<span class="kw">int</span>&gt; present = Some(<span class="num">42</span>);
+<span class="type">Optional</span>&lt;<span class="kw">int</span>&gt; absent  = None;
+
+<span class="cmt">// Implicit cast from T</span>
+<span class="type">Optional</span>&lt;<span class="kw">string</span>&gt; name = <span class="str">"Alice"</span>;
+
+<span class="cmt">// Returning None from a method</span>
+<span class="type">Optional</span>&lt;<span class="kw">int</span>&gt; TryParseLevel(<span class="kw">string</span> raw)
+{
+    <span class="kw">return int</span>.TryParse(raw, <span class="kw">out var</span> level) ? Some(level) : None;
+}</code></pre>
+            </div>
+          </div>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Transforming with Then()</h3>
+            <p class="prose"><code>Then()</code> applies a function only when the value is <code>Some</code>, skipping over <code>None</code> automatically. Chain multiple <code>Then()</code> calls to build pipelines without nested null checks.</p>
+            <div class="code-card code-card--func">
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">Pipeline.cs</span></div>
+<pre class="code-block"><code><span class="type">Optional</span>&lt;<span class="type">Player</span>&gt; player = FindPlayer(id);
+
+player
+    .Then(p => p.Inventory)
+    .Then(inv => inv.GetWeapon(<span class="str">"sword"</span>))
+    .Match(
+        onNone:  () => Log(<span class="str">"No sword found"</span>),
+        onSome: sword => Equip(sword)
+    );</code></pre>
+            </div>
+          </div>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Providing fallbacks</h3>
+            <p class="prose">Use <code>.Or(fallback)</code> for an eager default or <code>.OrElse(() => compute())</code> for a lazy one. Use <code>.Filter(predicate)</code> to convert a <code>Some</code> to <code>None</code> when a condition fails.</p>
+            <div class="code-card code-card--func">
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">Fallbacks.cs</span></div>
+<pre class="code-block"><code><span class="cmt">// Eager default</span>
+<span class="kw">string</span> label = playerName.Or(<span class="str">"Guest"</span>);
+
+<span class="cmt">// Lazy default (only computed if None)</span>
+<span class="type">Config</span> cfg = maybeConfig.OrElse(() => <span class="type">Config</span>.Default);
+
+<span class="cmt">// Filter: keep only non-empty names</span>
+<span class="type">Optional</span>&lt;<span class="kw">string</span>&gt; validName = rawName
+    .Filter(s => s.Length > <span class="num">0</span>)
+    .Then(s => s.Trim());</code></pre>
+            </div>
+          </div>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Pattern matching</h3>
+            <p class="prose"><code>Match(onNone, onSome)</code> exhaustively handles both cases. It forces you to decide what to do in the absence case rather than silently returning null.</p>
+            <div class="code-card code-card--func">
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">Match.cs</span></div>
+<pre class="code-block"><code><span class="kw">public</span> <span class="type">Vector3</span> ResolveSpawn(<span class="type">Optional</span>&lt;<span class="type">Transform</span>&gt; maybeSpawn)
+{
+    <span class="kw">return</span> maybeSpawn.Match(
+        onNone: () => _fallbackSpawn.position,
+        onSome:  t => t.position
+    );
+}</code></pre>
+            </div>
+          </div>
+
+          <div class="callout callout--tip">
+            <strong>Unity fake-null</strong>
+            Unity's <code>UnityEngine.Object</code> equality overloads return <code>true</code> for destroyed objects even when the reference is non-null. <code>Some()</code> checks for this and returns <code>None</code> automatically — you don't need to guard against destroyed references.
+          </div>
+        </section>
+
+        <!-- ── Guide: Result<T> ── -->
+        <section class="docs-section" id="guide-result">
+          <div class="section-eyebrow">Guides</div>
+          <h2 class="section-title">Result&lt;T&gt;</h2>
+          <p class="section-intro">
+            <code>Result&lt;T&gt;</code> represents the outcome of an operation — either <code>Success(value)</code> or <code>Error</code>. Use it when you need to explain <em>why</em> something failed, not just that it did.
+          </p>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Creating Result values</h3>
+            <div class="code-card code-card--func">
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">Creation.cs</span></div>
+<pre class="code-block"><code><span class="kw">using static</span> Tutan.Functional.F;
+
+<span class="type">Result</span>&lt;<span class="kw">int</span>&gt; ok    = Success(<span class="num">42</span>);
+<span class="type">Result</span>&lt;<span class="kw">int</span>&gt; fail  = Error(<span class="str">"Value must be positive"</span>);
+
+<span class="cmt">// Wrap exceptions automatically</span>
+<span class="type">Result</span>&lt;<span class="kw">int</span>&gt; parsed = Try(() => <span class="kw">int</span>.Parse(rawInput));
+
+<span class="cmt">// Filter: fail if predicate returns false</span>
+<span class="type">Result</span>&lt;<span class="kw">int</span>&gt; positive = parsed.Filter(n => n > <span class="num">0</span>);</code></pre>
+            </div>
+          </div>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Chaining operations</h3>
+            <p class="prose"><code>Then()</code> applies a function only on success. If any step returns an error, the rest of the chain is short-circuited — you handle the error once at the end with <code>Match()</code>.</p>
+            <div class="code-card code-card--func">
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">Pipeline.cs</span></div>
+<pre class="code-block"><code>Try(() => <span class="type">JsonUtility</span>.FromJson&lt;<span class="type">PlayerConfig</span>&gt;(json))
+    .Filter(cfg => cfg != <span class="kw">null</span>)
+    .Then(cfg => Validate(cfg))
+    .Then(cfg => Save(cfg))
+    .Match(
+        onError:   e => Debug.LogError(e.Message),
+        onSuccess: _ => Debug.Log(<span class="str">"Config saved"</span>)
+    );</code></pre>
+            </div>
+          </div>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Recovering from errors</h3>
+            <p class="prose">Use <code>.Or(fallback)</code> to provide a default on error, or <code>.OrElse(error => compute(error))</code> to inspect the error and compute a recovery value.</p>
+            <div class="code-card code-card--func">
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">Recovery.cs</span></div>
+<pre class="code-block"><code><span class="cmt">// Fallback to default config if load fails</span>
+<span class="type">PlayerConfig</span> config = LoadConfig(path)
+    .Or(<span class="type">PlayerConfig</span>.Default);
+
+<span class="cmt">// Log the error, return fallback</span>
+<span class="type">PlayerConfig</span> config2 = LoadConfig(path)
+    .OrElse(err => {
+        Debug.LogWarning(err.Message);
+        <span class="kw">return</span> <span class="type">PlayerConfig</span>.Default;
+    });</code></pre>
+            </div>
+          </div>
+
+          <div class="callout callout--tip">
+            <strong>Optional vs Result</strong>
+            Use <code>Optional&lt;T&gt;</code> when "not found" is a normal, expected state. Use <code>Result&lt;T&gt;</code> when failure needs an explanation — parsing errors, IO failures, validation failures.
+          </div>
+        </section>
+
+        <!-- ── Guide: Error ── -->
+        <section class="docs-section" id="guide-error">
+          <div class="section-eyebrow">Guides</div>
+          <h2 class="section-title">The Error Type</h2>
+          <p class="section-intro">
+            <code>Error</code> is an immutable value type (16 bytes on 64-bit) that carries a message and optional nested or composite inner errors. It is the failure payload inside <code>Result&lt;T&gt;</code>.
+          </p>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Simple error</h3>
+            <div class="code-card code-card--func">
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">SimpleError.cs</span></div>
+<pre class="code-block"><code><span class="type">Error</span> e = Error(<span class="str">"Save file not found"</span>);
+
+<span class="cmt">// Implicit cast from string</span>
+<span class="type">Result</span>&lt;<span class="type">SaveData</span>&gt; result = Error(<span class="str">"Save file not found"</span>);</code></pre>
+            </div>
+          </div>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Nested error — wraps a cause</h3>
+            <p class="prose">Use nested errors to attach a high-level message to a lower-level cause — similar to <code>Exception.InnerException</code>.</p>
+            <div class="code-card code-card--func">
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">Nested.cs</span></div>
+<pre class="code-block"><code><span class="type">Error</span> inner = Error(<span class="str">"Disk read failed"</span>);
+<span class="type">Error</span> outer = Error(<span class="str">"Could not load save"</span>, inner);
+
+<span class="cmt">// outer.Message     → "Could not load save"</span>
+<span class="cmt">// outer.InnerErrors → [{ "Disk read failed" }]</span></code></pre>
+            </div>
+          </div>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Composite error — collects multiple failures</h3>
+            <p class="prose">Pass a collection of errors to create a composite that joins all messages. This is what <code>HarvestErrors</code> produces when multiple validators fail simultaneously.</p>
+            <div class="code-card code-card--func">
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">Composite.cs</span></div>
+<pre class="code-block"><code><span class="type">Error</span> composite = Error(<span class="kw">new</span>[] {
+    Error(<span class="str">"DisplayName is required"</span>),
+    Error(<span class="str">"Level must be >= 1"</span>),
+    Error(<span class="str">"Currency must be >= 0"</span>),
+});
+<span class="cmt">// composite.Message → "DisplayName is required; Level must be >= 1; ..."</span>
+
+<span class="kw">foreach</span> (<span class="kw">var</span> e <span class="kw">in</span> composite.AsEnumerable())
+    Debug.LogError(e.Message); <span class="cmt">// logs each error separately</span></code></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── Guide: Validation ── -->
+        <section class="docs-section" id="guide-validation">
+          <div class="section-eyebrow">Guides</div>
+          <h2 class="section-title">Validation Pipelines</h2>
+          <p class="section-intro">
+            A <code>Validator&lt;T&gt;</code> is a function <code>T → Result&lt;T&gt;</code>. Combine validators with <code>FailFast</code> (stop at first failure) or <code>HarvestErrors</code> (collect all failures).
+          </p>
+
+          <div class="code-card code-card--func">
+            <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">Validation.cs</span></div>
+<pre class="code-block"><code><span class="kw">using static</span> Tutan.Functional.F;
+
+<span class="type">Validator</span>&lt;<span class="type">PlayerConfig</span>&gt; hasName  = cfg =>
+    cfg.DisplayName.Length > <span class="num">0</span> ? Success(cfg) : Error(<span class="str">"DisplayName required"</span>);
+
+<span class="type">Validator</span>&lt;<span class="type">PlayerConfig</span>&gt; hasLevel = cfg =>
+    cfg.Level >= <span class="num">1</span> ? Success(cfg) : Error(<span class="str">"Level must be >= 1"</span>);
+
+<span class="cmt">// Stops at first failure</span>
+<span class="type">Validator</span>&lt;<span class="type">PlayerConfig</span>&gt; fast     = FailFast(hasName, hasLevel);
+
+<span class="cmt">// Runs all validators, collects all errors into a composite</span>
+<span class="type">Validator</span>&lt;<span class="type">PlayerConfig</span>&gt; harvest  = HarvestErrors(hasName, hasLevel);
+
+harvest(config).Match(
+    onError:   e => Debug.LogError(e.Message),
+    onSuccess: c => Apply(c)
+);</code></pre>
+          </div>
+        </section>
+
+        <!-- ── Guide: Async ── -->
+        <section class="docs-section" id="guide-async">
+          <div class="section-eyebrow">Guides</div>
+          <h2 class="section-title">Async Support</h2>
+          <p class="section-intro">
+            Every operation on <code>Optional&lt;T&gt;</code> and <code>Result&lt;T&gt;</code> has async counterparts built on UniTask. Mix sync and async steps freely — the types handle the adaptation.
+          </p>
+
+          <div class="code-card code-card--func">
+            <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">AsyncPipeline.cs</span></div>
+<pre class="code-block"><code><span class="cmt">// Async exception wrapping</span>
+<span class="type">Result</span>&lt;<span class="type">SaveData</span>&gt; result = <span class="kw">await</span> TryAsync(async () =>
+{
+    <span class="kw">var</span> json = <span class="kw">await</span> File.ReadAllTextAsync(path);
+    <span class="kw">return</span> <span class="type">JsonUtility</span>.FromJson&lt;<span class="type">SaveData</span>&gt;(json);
+});
+
+<span class="cmt">// Mixed sync/async chain</span>
+result
+    .Then(data => data.Normalize())          <span class="cmt">// sync map</span>
+    .ThenAsync(data => Upload(data))          <span class="cmt">// async bind</span>
+    .Match(
+        onError:   e => Log(e.Message),
+        onSuccess: _ => Log(<span class="str">"Uploaded"</span>)
+    );</code></pre>
+          </div>
+
+          <div class="callout callout--note">
+            <strong>Async extensions require UniTask</strong>
+            <code>ThenAsync</code>, <code>MatchAsync</code>, and <code>TryAsync</code> return <code>UniTask&lt;T&gt;</code>. Add the UniTask package to your project to use these methods.
+          </div>
+        </section>
+
+        <!-- ── Guide: Unity Integration ── -->
+        <section class="docs-section" id="guide-unity">
+          <div class="section-eyebrow">Guides</div>
+          <h2 class="section-title">Unity Integration</h2>
+          <p class="section-intro">
+            Unity-specific extension methods in <code>LookupExtensions</code> provide safe component access, parent traversal, and dictionary lookups that return <code>Optional&lt;T&gt;</code> instead of null.
+          </p>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Component lookup</h3>
+            <div class="code-card code-card--func">
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">HealthReader.cs</span></div>
+<pre class="code-block"><code><span class="kw">using</span> Tutan.Functional;
+
+<span class="kw">public class</span> <span class="type">HealthReader</span> : <span class="type">MonoBehaviour</span>
+{
+    [<span class="type">SerializeField</span>] <span class="kw">private</span> <span class="type">GameObject</span> target;
+
+    <span class="kw">private void</span> Start()
+    {
+        <span class="kw">int</span> hp = target
+            .LookupComponent&lt;<span class="type">Health</span>&gt;()
+            .Then(h => h.Current)
+            .Or(<span class="num">0</span>);
+
+        Debug.Log($<span class="str">"HP: {hp}"</span>);
+    }
+}</code></pre>
+            </div>
+          </div>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Safe dictionary access</h3>
+            <div class="code-card code-card--func">
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">ItemLookup.cs</span></div>
+<pre class="code-block"><code><span class="type">Optional</span>&lt;<span class="type">ItemDefinition</span>&gt; item = _itemTable.Lookup(itemId);
+
+item.Match(
+    onNone: () => ShowToast(<span class="str">"Item not found"</span>),
+    onSome: def => ShowItem(def)
+);</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── API: Optional<T> ── -->
+        <section class="docs-section" id="api-optional">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">Optional&lt;T&gt;</h2>
+          <p class="section-intro"><code>readonly record struct</code> in <code>Tutan.Functional</code>.</p>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">Optional&lt;T&gt;</span>
+              <span class="api-type-badge badge--struct">struct</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--prop">prop</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">bool IsSome { get; }</div>
+                  <div class="api-member-desc"><code>true</code> when a value is present.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--prop">prop</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">bool IsNone { get; }</div>
+                  <div class="api-member-desc"><code>true</code> when absent.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">R Match&lt;R&gt;(Func&lt;R&gt; onNone, Func&lt;T,R&gt; onSome)</div>
+                  <div class="api-member-desc">Extracts the value by exhaustive pattern matching. Forces handling both cases.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">OptionalExtensions</span>
+              <span class="api-type-badge badge--static">extensions</span>
+            </div>
+            <div class="table-wrap">
+              <table class="docs-table">
+                <thead><tr><th>Method</th><th>Description</th></tr></thead>
+                <tbody>
+                  <tr><td>Then(Func&lt;T,R&gt;)</td><td>Map — applies func if <code>Some</code>, passes <code>None</code> through</td></tr>
+                  <tr><td>Then(Func&lt;T,Optional&lt;R&gt;&gt;)</td><td>Bind — flatMap, unwraps nested Optional</td></tr>
+                  <tr><td>Then(Action&lt;T&gt;)</td><td>Side-effect pass-through — returns <code>Optional&lt;T&gt;</code> unchanged</td></tr>
+                  <tr><td>Filter(Func&lt;T,bool&gt;)</td><td>Returns <code>None</code> if predicate fails</td></tr>
+                  <tr><td>Or(T fallback)</td><td>Returns value or eager fallback</td></tr>
+                  <tr><td>OrElse(Func&lt;T&gt;)</td><td>Returns value or lazy fallback</td></tr>
+                  <tr><td>HasValue(out T)</td><td>Out-param extraction; returns <code>false</code> for <code>None</code></td></tr>
+                  <tr><td>ValueUnsafe()</td><td>Throws <code>InvalidOperationException</code> on <code>None</code></td></tr>
+                  <tr><td>AsEnumerable()</td><td>Zero or one element; safe to iterate with foreach</td></tr>
+                  <tr><td>ToResult(Func&lt;Error&gt;)</td><td>Converts <code>None</code> to an error</td></tr>
+                  <tr><td>Map / Bind</td><td>Aliases for <code>Then</code> overloads</td></tr>
+                  <tr><td>Select / Where / SelectMany</td><td>LINQ query syntax support</td></tr>
+                  <tr><td>ThenAsync / MatchAsync</td><td>UniTask async counterparts</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── API: Result<T> ── -->
+        <section class="docs-section" id="api-result">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">Result&lt;T&gt;</h2>
+          <p class="section-intro"><code>readonly record struct</code> in <code>Tutan.Functional</code>.</p>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">Result&lt;T&gt;</span>
+              <span class="api-type-badge badge--struct">struct</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--prop">prop</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">bool IsSuccess { get; }</div>
+                  <div class="api-member-desc"><code>true</code> when the operation succeeded.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--prop">prop</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">bool IsError { get; }</div>
+                  <div class="api-member-desc"><code>true</code> when the operation failed.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">R Match&lt;R&gt;(Func&lt;Error,R&gt; onError, Func&lt;T,R&gt; onSuccess)</div>
+                  <div class="api-member-desc">Exhaustive pattern match. Forces handling both success and error cases.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">ResultExtensions</span>
+              <span class="api-type-badge badge--static">extensions</span>
+            </div>
+            <div class="table-wrap">
+              <table class="docs-table">
+                <thead><tr><th>Method</th><th>Description</th></tr></thead>
+                <tbody>
+                  <tr><td>Then(Func&lt;T,R&gt;)</td><td>Map — applies func on success; passes error through</td></tr>
+                  <tr><td>Then(Func&lt;T,Result&lt;R&gt;&gt;)</td><td>Bind — flatMap, propagates errors</td></tr>
+                  <tr><td>Then(Action&lt;T&gt;)</td><td>Side-effect pass-through</td></tr>
+                  <tr><td>Filter(Func&lt;T,bool&gt;)</td><td>Converts failing predicate to <code>Error("Predicate not satisfied")</code></td></tr>
+                  <tr><td>Or(T fallback)</td><td>Returns value or fallback on error</td></tr>
+                  <tr><td>OrElse(Func&lt;T&gt;)</td><td>Lazy fallback on error</td></tr>
+                  <tr><td>OrElse(Func&lt;Error,T&gt;)</td><td>Lazy fallback with access to the error</td></tr>
+                  <tr><td>IsSuccess(out T)</td><td>Out-param extraction; returns <code>false</code> on error</td></tr>
+                  <tr><td>ValueUnsafe() / ErrorUnsafe()</td><td>Unsafe extraction; throw on wrong state</td></tr>
+                  <tr><td>ForEach(Action&lt;T&gt;)</td><td>Side-effect, returns <code>Result&lt;Unit&gt;</code></td></tr>
+                  <tr><td>AsEnumerable()</td><td>Zero or one element</td></tr>
+                  <tr><td>ToOptional()</td><td>Discards the error, converts success to <code>Some</code></td></tr>
+                  <tr><td>Map / Bind</td><td>Aliases for <code>Then</code> overloads</td></tr>
+                  <tr><td>Select / SelectMany</td><td>LINQ query syntax support</td></tr>
+                  <tr><td>ThenAsync / MatchAsync</td><td>UniTask async counterparts</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── API: Error ── -->
+        <section class="docs-section" id="api-error">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">Error</h2>
+          <p class="section-intro"><code>readonly struct</code>, <code>IEquatable&lt;Error&gt;</code>. 16 bytes on 64-bit. Implicit cast from <code>string</code>.</p>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">Error</span>
+              <span class="api-type-badge badge--struct">struct</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--ctor">ctor</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">Error(string message)</div>
+                  <div class="api-member-desc">Simple error with a message.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--ctor">ctor</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">Error(string message, Error inner)</div>
+                  <div class="api-member-desc">Nested error — wraps a cause. Equivalent to <code>Exception.InnerException</code>.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--ctor">ctor</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">Error(IEnumerable&lt;Error&gt; errors)</div>
+                  <div class="api-member-desc">Composite error — joins all messages with <code>"; "</code>, stores all as inner errors.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--prop">prop</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">string Message { get; }</div>
+                  <div class="api-member-desc">Human-readable error description.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--prop">prop</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">ReadOnlySpan&lt;Error&gt; InnerErrors { get; }</div>
+                  <div class="api-member-desc">Inner errors (empty span when none). Cannot cross async boundaries — call <code>.ToArray()</code> first.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">IEnumerable&lt;Error&gt; AsEnumerable()</div>
+                  <div class="api-member-desc">Returns <code>{ this }</code> for simple/nested; returns inner errors for composite. Use for logging all failures.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── API: Validator<T> ── -->
+        <section class="docs-section" id="api-validator">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">Validator&lt;T&gt;</h2>
+          <p class="section-intro">A delegate type: <code>Result&lt;T&gt; Validator&lt;T&gt;(T t)</code>. Combine with <code>FailFast</code> or <code>HarvestErrors</code> from the F module.</p>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">F module — Validation</span>
+              <span class="api-type-badge badge--static">static</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">Validator&lt;T&gt; FailFast&lt;T&gt;(params Validator&lt;T&gt;[] validators)</div>
+                  <div class="api-member-desc">Runs validators in order. Stops and returns the first failure.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">Validator&lt;T&gt; HarvestErrors&lt;T&gt;(params Validator&lt;T&gt;[] validators)</div>
+                  <div class="api-member-desc">Runs all validators. Accumulates all failures into a composite <code>Error</code>.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── API: F Module ── -->
+        <section class="docs-section" id="api-f">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">F Module</h2>
+          <p class="section-intro">Static functions in <code>Tutan.Functional.F</code>. Bring into scope with <code>using static Tutan.Functional.F;</code>.</p>
+
+          <div class="table-wrap">
+            <table class="docs-table">
+              <thead><tr><th>Signature</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td>Some&lt;T&gt;(T value)</td><td>Wraps a value. Returns <code>None</code> for null / destroyed Unity objects.</td></tr>
+                <tr><td>None</td><td>The absence sentinel. Implicitly converts to any <code>Optional&lt;T&gt;</code>.</td></tr>
+                <tr><td>Success&lt;T&gt;(T value)</td><td>Creates a successful Result. Returns <code>Error("Value is null")</code> for null references.</td></tr>
+                <tr><td>Success()</td><td>Creates a successful <code>Result&lt;Unit&gt;</code> with no value.</td></tr>
+                <tr><td>Error(string)</td><td>Simple error.</td></tr>
+                <tr><td>Error(string, Error)</td><td>Nested error — message + cause.</td></tr>
+                <tr><td>Error(IEnumerable&lt;Error&gt;)</td><td>Composite error.</td></tr>
+                <tr><td>Try&lt;T&gt;(Func&lt;T&gt;)</td><td>Wraps exceptions into <code>Error(ex.ToString())</code>.</td></tr>
+                <tr><td>Try(Action)</td><td>Same, for void actions.</td></tr>
+                <tr><td>TryAsync&lt;T&gt;(Func&lt;UniTask&lt;T&gt;&gt;)</td><td>Async exception wrapping.</td></tr>
+                <tr><td>Pipe&lt;T,R&gt;(T, Func&lt;T,R&gt;)</td><td>Left-to-right function application.</td></tr>
+                <tr><td>Tee(Action) / Tee&lt;T&gt;(Action&lt;T&gt;)</td><td>Lifts side-effect for use in pipelines.</td></tr>
+                <tr><td>Curry / CurryFirst</td><td>Function currying and partial application.</td></tr>
+                <tr><td>Unit()</td><td>Returns the empty value (<code>default(ValueTuple)</code>).</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ── API: Extensions ── -->
+        <section class="docs-section" id="api-extensions">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">Extensions</h2>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">LookupExtensions</span>
+              <span class="api-type-badge badge--static">extensions</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">Optional&lt;T&gt; LookupComponent&lt;T&gt;(this GameObject go) where T : Component</div>
+                  <div class="api-member-desc">Safe <code>TryGetComponent</code>. Returns <code>None</code> when the GameObject is null/destroyed or component is absent.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">Optional&lt;Transform&gt; LookupParent(this Transform t)</div>
+                  <div class="api-member-desc">Safe parent access. Returns <code>None</code> when no parent or destroyed.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">Optional&lt;T&gt; Lookup&lt;K,T&gt;(this IDictionary&lt;K,T&gt; dict, K key)</div>
+                  <div class="api-member-desc">Safe dictionary access. Returns <code>None</code> on missing key.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">EnumerableExt</span>
+              <span class="api-type-badge badge--static">extensions</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">Optional&lt;T&gt; Head&lt;T&gt;(this IEnumerable&lt;T&gt; list)</div>
+                  <div class="api-member-desc">First element as Optional. <code>None</code> on empty or null sequence.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">Optional&lt;T&gt; FindFirst&lt;T&gt;(this IEnumerable&lt;T&gt; source, Func&lt;T,bool&gt; predicate)</div>
+                  <div class="api-member-desc">First matching element as Optional.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">IEnumerable&lt;T&gt; Flatten&lt;T&gt;(this IEnumerable&lt;IEnumerable&lt;T&gt;&gt; list)</div>
+                  <div class="api-member-desc">Flattens one level of nesting.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">Map / Bind / ForEach</div>
+                  <div class="api-member-desc">Aliases for <code>Select</code>, <code>SelectMany</code>, and side-effect iteration.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div><!-- .docs-content -->
+    </main>
+  </div><!-- .docs-shell -->
+
+  <!-- Sidebar toggle (mobile) -->
+  <button class="sidebar-toggle-btn" aria-label="Toggle navigation sidebar">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+
+  <script src="src/main.js"></script>
+  <script src="src/docs.js"></script>
+</body>
+</html>

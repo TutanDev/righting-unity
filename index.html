@@ -8,7 +8,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="src/styles.css">
+  <link rel="icon" type="image/x-icon" href="assets/favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
+  <link rel="manifest" href="assets/favicon/site.webmanifest">
 </head>
 <body>
 
@@ -16,14 +21,13 @@
   <nav class="nav" id="nav">
     <div class="nav-inner">
       <a href="#hero" class="nav-logo">
-        <img src="logo.png" alt="" class="nav-logo-icon" aria-hidden="true">
+        <img src="assets/favicon/favicon-32x32.png" alt="" class="nav-logo-icon" aria-hidden="true">
         Unity Framework
       </a>
       <div class="nav-links">
         <a href="#architecture" class="nav-link">Architecture</a>
         <a href="#functional" class="nav-link">Functional</a>
         <a href="#utilities" class="nav-link">Utilities</a>
-        <a href="examples.html" class="nav-link nav-link--examples">Examples</a>
       </div>
       <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -46,10 +50,6 @@
       </p>
       <div class="hero-actions">
         <a href="#architecture" class="btn btn--primary">Explore Packages</a>
-        <a href="examples.html" class="btn btn--ghost">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-          View Examples
-        </a>
       </div>
       <div class="hero-packages">
         <a href="#architecture" class="hero-package hero-package--arch">
@@ -146,6 +146,9 @@
         </div>
       </div>
       </div>
+      <div style="text-align:center;margin-top:48px">
+        <a href="architecture.html" class="btn btn--cta btn--cta--arch">Explore</a>
+      </div>
     </div>
   </section>
 
@@ -228,6 +231,9 @@ result
             </div>
           </div>
         </div>
+      </div>
+      <div style="text-align:center;margin-top:48px">
+        <a href="functional.html" class="btn btn--cta btn--cta--func">Explore</a>
       </div>
     </div>
   </section>
@@ -315,31 +321,8 @@ result
           </div>
         </div>
       </div>
-
-    </div>
-  </section>
-
-  <!-- Examples Section -->
-  <section class="examples-cta" id="examples">
-    <div class="container examples-cta-inner">
-      <h2 class="examples-cta-title">See It In Action</h2>
-      <p class="examples-cta-desc">
-        Real-world code examples extracted from each package's documentation.
-        Layer enforcement, null-safe pipelines, zero-allocation messaging, and more.
-      </p>
-      <div class="examples-cta-cards">
-        <a href="examples.html#arch-examples" class="examples-card examples-card--arch">
-          <h3>Architecture</h3>
-          <p>Layer tagging, topology validation, use case tracing, and violation detection.</p>
-        </a>
-        <a href="examples.html#func-examples" class="examples-card examples-card--func">
-          <h3>Functional</h3>
-          <p>Safe component lookups, result pipelines, error composition, and UI fallbacks.</p>
-        </a>
-        <a href="examples.html#util-examples" class="examples-card examples-card--util">
-          <h3>Utilities</h3>
-          <p>Pub/sub messaging, handle-based timers, pooled audio, and data persistence.</p>
-        </a>
+      <div style="text-align:center;margin-top:48px">
+        <a href="utilities.html" class="btn btn--cta btn--cta--util">Explore</a>
       </div>
     </div>
   </section>
@@ -348,7 +331,7 @@ result
   <footer class="footer">
     <div class="container footer-inner">
       <div class="footer-brand">
-        <img src="logo.png" alt="" class="nav-logo-icon" aria-hidden="true">
+        <img src="assets/favicon/favicon-32x32.png" alt="" class="nav-logo-icon" aria-hidden="true">
         <span>Unity Framework</span>
       </div>
       <p class="footer-copy">
@@ -359,6 +342,6 @@ result
     </div>
   </footer>
 
-  <script src="main.js"></script>
+  <script src="src/main.js"></script>
 </body>
 </html>

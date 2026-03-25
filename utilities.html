@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Utilities — Unity Framework</title>
+  <meta name="description" content="UP-Utilities: zero-GC MessageBus, Timer, AudioPlayer, Persistence, and Reporter for professional Unity projects.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/styles.css">
+  <link rel="stylesheet" href="src/docs.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/favicon/favicon-32x32.png" alt="" class="nav-logo-icon" aria-hidden="true">
+        Unity Framework
+      </a>
+      <div class="nav-links">
+        <a href="architecture.html" class="nav-link">Architecture</a>
+        <a href="functional.html" class="nav-link">Functional</a>
+        <a href="utilities.html" class="nav-link" style="color:var(--util-color)">Utilities</a>
+      </div>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="docs-shell">
+
+    <!-- Sidebar -->
+    <aside class="docs-sidebar" aria-label="Documentation navigation">
+      <div class="sidebar-header">
+        <a href="index.html" class="sidebar-back">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+          Back to home
+        </a>
+        <span class="sidebar-pkg-id sidebar-pkg-id--util">com.tutan.utilities</span>
+        <div class="sidebar-pkg-name">Utilities</div>
+      </div>
+      <nav class="sidebar-nav" aria-label="Page sections">
+        <a href="#getting-started" class="sidebar-direct" data-pkg="util">Getting Started</a>
+
+        <div class="sidebar-group open">
+          <button class="sidebar-group-btn" aria-expanded="true">
+            Guides
+            <svg class="sidebar-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="sidebar-items">
+            <a href="#guide-messagebus" class="sidebar-link" data-pkg="util">MessageBus</a>
+            <a href="#guide-timer" class="sidebar-link" data-pkg="util">Timer</a>
+            <a href="#guide-audioplayer" class="sidebar-link" data-pkg="util">AudioPlayer</a>
+            <a href="#guide-persistence" class="sidebar-link" data-pkg="util">Persistence</a>
+            <a href="#guide-reporter" class="sidebar-link" data-pkg="util">Reporter</a>
+          </div>
+        </div>
+
+        <div class="sidebar-group">
+          <button class="sidebar-group-btn" aria-expanded="false">
+            API Reference
+            <svg class="sidebar-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="sidebar-items">
+            <a href="#api-messagebus" class="sidebar-link" data-pkg="util">MessageBus</a>
+            <a href="#api-timer" class="sidebar-link" data-pkg="util">Timer</a>
+            <a href="#api-audioplayer" class="sidebar-link" data-pkg="util">AudioPlayer</a>
+            <a href="#api-persistence" class="sidebar-link" data-pkg="util">Persistence</a>
+            <a href="#api-reporter" class="sidebar-link" data-pkg="util">Reporter</a>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main content -->
+    <main class="docs-main">
+
+      <!-- ── Getting Started Hero ── -->
+      <section class="docs-hero" id="getting-started">
+        <div class="docs-hero-glow" style="background:radial-gradient(ellipse, var(--util-glow) 0%, transparent 70%)" aria-hidden="true"></div>
+        <span class="docs-hero-badge docs-hero-badge--util">com.tutan.utilities · v0.2.1</span>
+        <h1 class="docs-hero-title">Zero-GC Infrastructure<br>for Every Unity Project</h1>
+        <p class="docs-hero-desc">
+          Five domain-agnostic services that live in the Utility bar of the architecture — available to every layer, allocating nothing on hot paths, optimized for XR frame budgets.
+        </p>
+        <div class="docs-hero-stats">
+          <div>
+            <span class="docs-stat-value" style="color:var(--util-color)">5</span>
+            <span class="docs-stat-label">Utilities</span>
+          </div>
+          <div>
+            <span class="docs-stat-value" style="color:var(--util-color)">Zero</span>
+            <span class="docs-stat-label">GC Allocs</span>
+          </div>
+          <div>
+            <span class="docs-stat-value" style="color:var(--util-color)">XR</span>
+            <span class="docs-stat-label">Optimized</span>
+          </div>
+          <div>
+            <span class="docs-stat-value" style="color:var(--util-color)">Unity 6</span>
+            <span class="docs-stat-label">Target</span>
+          </div>
+        </div>
+
+        <div class="callout callout--warn" style="margin-top:8px">
+          <strong>Setup pattern</strong>
+          Every utility follows the same pattern: attach a <code>*Host</code> MonoBehaviour to a persistent GameObject, create a <code>*Settings</code> ScriptableObject, assign it in the Inspector. The singleton is set in <code>Awake</code> and cleared in <code>OnDestroy</code>.
+        </div>
+
+        <div class="steps" style="margin-top:28px">
+          <div class="step">
+            <div class="step-num" style="border-color:var(--util-color);color:var(--util-color)">1</div>
+            <div class="step-body">
+              <div class="step-title">Install the package</div>
+              <div class="step-desc">Open <strong>Window → Package Manager</strong>, click <strong>+</strong> → <em>Add package from disk…</em>, navigate to <code>Packages/com.tutan.utilities/package.json</code>.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" style="border-color:var(--util-color);color:var(--util-color)">2</div>
+            <div class="step-body">
+              <div class="step-title">Create a persistent GameObject</div>
+              <div class="step-desc">Add a <strong>Services</strong> GameObject to your bootstrap scene and call <code>DontDestroyOnLoad</code> on it (or use your DI root).</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" style="border-color:var(--util-color);color:var(--util-color)">3</div>
+            <div class="step-body">
+              <div class="step-title">Attach Host components</div>
+              <div class="step-desc">Add <code>MessageBusHost</code>, <code>TimerHost</code>, <code>AudioPlayerHost</code>, <code>PersistenceServiceHost</code> to the GameObject. Each registers its singleton on Awake.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" style="border-color:var(--util-color);color:var(--util-color)">4</div>
+            <div class="step-body">
+              <div class="step-title">Configure via Settings assets</div>
+              <div class="step-desc">Create <code>*Settings</code> ScriptableObjects via <strong>Create → Utilities → …</strong> and assign them to the Host components in the Inspector.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="docs-content">
+
+        <!-- ── Guide: MessageBus ── -->
+        <section class="docs-section" id="guide-messagebus">
+          <div class="section-eyebrow">Guides</div>
+          <h2 class="section-title">MessageBus</h2>
+          <p class="section-intro">
+            Type-safe N:M pub/sub for decoupled architecture. Messages are <code>unmanaged struct</code> — no GC heap allocation, no delegate equality problems. Built for 72–120 Hz XR frame budgets.
+          </p>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Define a message</h3>
+            <p class="prose">A message is any <code>unmanaged struct</code> implementing <code>IMessage</code>. The <code>unmanaged</code> constraint guarantees no managed references — no <code>string</code>, no arrays, no class fields.</p>
+            <div class="code-card code-card--util">
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">Messages.cs</span></div>
+<pre class="code-block"><code><span class="kw">using</span> Utilities.Messaging;
+
+<span class="kw">public struct</span> <span class="type">PlayerDied</span> : <span class="type">IMessage</span>
+{
+    <span class="kw">public int</span> PlayerId;
+    <span class="kw">public float</span> Timestamp;
+}
+
+<span class="cmt">// If you need string-like data, use FixedString:</span>
+<span class="kw">public struct</span> <span class="type">SceneLoaded</span> : <span class="type">IMessage</span>
+{
+    <span class="kw">public int</span> SceneIndex;
+    <span class="kw">public</span> <span class="type">FixedString64Bytes</span> SceneName;
+}</code></pre>
+            </div>
+          </div>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Subscribe and unsubscribe</h3>
+            <p class="prose">Subscribe returns a <code>SubscriptionToken</code> — an integer handle. Store it and pass it to <code>Unsubscribe</code>. No delegate equality comparison, no allocation on subscription changes.</p>
+            <div class="code-card code-card--util">
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">Subscriber.cs</span></div>
+<pre class="code-block"><code><span class="kw">private</span> <span class="type">SubscriptionToken</span> _token;
+
+<span class="kw">void</span> OnEnable()
+{
+    _token = <span class="type">MessageBus</span>.Instance.Subscribe&lt;<span class="type">PlayerDied</span>&gt;(OnPlayerDied);
+}
+
+<span class="kw">void</span> OnDisable()
+{
+    <span class="type">MessageBus</span>.Instance.Unsubscribe(_token);
+}
+
+<span class="kw">void</span> OnPlayerDied(<span class="kw">ref</span> <span class="type">PlayerDied</span> msg)
+{
+    Debug.Log($<span class="str">"Player {msg.PlayerId} died at {msg.Timestamp}"</span>);
+}</code></pre>
+            </div>
+          </div>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Publish and enqueue</h3>
+            <p class="prose"><code>Publish</code> dispatches immediately on the calling thread. <code>Enqueue</code> is thread-safe — use it from worker threads. Call <code>DrainQueues()</code> on the main thread to process queued messages.</p>
+            <div class="code-card code-card--util">
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">Publisher.cs</span></div>
+<pre class="code-block"><code><span class="cmt">// Immediate dispatch (main thread)</span>
+<span class="kw">var</span> msg = <span class="kw">new</span> <span class="type">PlayerDied</span> { PlayerId = id, Timestamp = <span class="type">Time</span>.time };
+<span class="type">MessageBus</span>.Instance.Publish(<span class="kw">ref</span> msg);
+
+<span class="cmt">// Thread-safe enqueue (any thread)</span>
+<span class="type">MessageBus</span>.Instance.Enqueue(<span class="kw">in</span> msg);
+
+<span class="cmt">// Drain on main thread (e.g., in Update)</span>
+<span class="type">MessageBus</span>.Instance.DrainQueues();</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── Guide: Timer ── -->
+        <section class="docs-section" id="guide-timer">
+          <div class="section-eyebrow">Guides</div>
+          <h2 class="section-title">Timer</h2>
+          <p class="section-intro">
+            Handle-based, pool-backed deferred callback scheduler. No string-based <code>Invoke</code>, no coroutine allocations. Pre-allocated pool of 64 slots (configurable). Main-thread only.
+          </p>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Setup</h3>
+            <p class="prose">Attach <code>TimerHost</code> to your persistent GameObject. Optionally create a <code>TimerSettings</code> ScriptableObject to configure pool size. Access via <code>Timer.Instance</code>.</p>
+          </div>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Scheduling callbacks</h3>
+            <div class="code-card code-card--util">
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">TimerUsage.cs</span></div>
+<pre class="code-block"><code><span class="kw">using</span> Utilities.Timing;
+
+<span class="cmt">// One-shot after 2 seconds</span>
+<span class="type">TimerHandle</span> handle = <span class="type">Timer</span>.Instance.Schedule(<span class="num">2f</span>, () => SpawnEnemy());
+
+<span class="cmt">// Repeating every 5 seconds</span>
+<span class="type">TimerHandle</span> loop = <span class="type">Timer</span>.Instance.ScheduleRepeating(<span class="num">5f</span>, () => CheckAI());
+
+<span class="cmt">// Custom params: unscaled time, first fire after 1s, then every 0.5s</span>
+<span class="kw">var</span> p = <span class="type">TimerParams</span>.Repeat(<span class="num">0.5f</span>).WithDelay(<span class="num">1f</span>).WithUnscaledTime(<span class="kw">true</span>);
+<span class="type">TimerHandle</span> precise = <span class="type">Timer</span>.Instance.Schedule(p, () => Tick());
+
+<span class="cmt">// Cancel a timer (safe — uses generation counter)</span>
+<span class="type">Timer</span>.Instance.Cancel(handle);</code></pre>
+            </div>
+          </div>
+
+          <div class="sub-section">
+            <h3 class="sub-title">TimerParams fluent API</h3>
+            <div class="table-wrap">
+              <table class="docs-table">
+                <thead><tr><th>Method / Property</th><th>Description</th></tr></thead>
+                <tbody>
+                  <tr><td>TimerParams.Default</td><td>1.0s delay, one-shot, scaled time</td></tr>
+                  <tr><td>TimerParams.Repeat(interval)</td><td>Repeating, no initial delay, scaled time</td></tr>
+                  <tr><td>.WithDelay(seconds)</td><td>Set delay before first fire</td></tr>
+                  <tr><td>.WithUnscaledTime(bool)</td><td>Use <code>Time.unscaledTime</code> instead of <code>Time.time</code></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="callout callout--note">
+            <strong>Handle safety</strong>
+            <code>TimerHandle</code> uses generation counters. Cancelling a handle that already fired (or was already cancelled) is a no-op — it never cancels the wrong timer.
+          </div>
+        </section>
+
+        <!-- ── Guide: AudioPlayer ── -->
+        <section class="docs-section" id="guide-audioplayer">
+          <div class="section-eyebrow">Guides</div>
+          <h2 class="section-title">AudioPlayer</h2>
+          <p class="section-intro">
+            Pooled AudioSource playback with zero GC allocation per sound. Pre-allocated pool of AudioSource components (default 16). Steal-oldest overflow policy. Handle-based lifecycle. Main-thread only.
+          </p>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Setup</h3>
+            <p class="prose">Attach <code>AudioPlayerHost</code> to your persistent GameObject. Optionally create an <code>AudioPlayerSettings</code> ScriptableObject to configure pool size. Access via <code>AudioPlayer.Instance</code>.</p>
+          </div>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Playing sounds</h3>
+            <div class="code-card code-card--util">
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">SoundUsage.cs</span></div>
+<pre class="code-block"><code><span class="kw">using</span> Utilities.Audio;
+
+<span class="cmt">// Simple 2D playback</span>
+<span class="type">SoundHandle</span> handle = <span class="type">AudioPlayer</span>.Instance.Play(explosionClip);
+
+<span class="cmt">// 3D spatial audio at a world position</span>
+<span class="kw">var</span> p = <span class="type">SoundParams</span>.Default
+    .WithVolume(<span class="num">0.8f</span>)
+    .WithSpatialBlend(<span class="num">1f</span>)
+    .WithPosition(transform.position);
+
+<span class="type">SoundHandle</span> spatial = <span class="type">AudioPlayer</span>.Instance.Play(footstepClip, p);
+
+<span class="cmt">// Lifecycle control</span>
+<span class="type">AudioPlayer</span>.Instance.Pause(handle);
+<span class="type">AudioPlayer</span>.Instance.Resume(handle);
+<span class="type">AudioPlayer</span>.Instance.Stop(handle);</code></pre>
+            </div>
+          </div>
+
+          <div class="sub-section">
+            <h3 class="sub-title">SoundParams fluent API</h3>
+            <div class="table-wrap">
+              <table class="docs-table">
+                <thead><tr><th>Method / Property</th><th>Description</th></tr></thead>
+                <tbody>
+                  <tr><td>SoundParams.Default</td><td>Volume 1, pitch 1, no loop, 2D</td></tr>
+                  <tr><td>.WithVolume(float)</td><td>0–1</td></tr>
+                  <tr><td>.WithPitch(float)</td><td>Playback speed multiplier</td></tr>
+                  <tr><td>.WithLoop(bool)</td><td>Loop the clip</td></tr>
+                  <tr><td>.WithSpatialBlend(float)</td><td>0 = full 2D, 1 = full 3D</td></tr>
+                  <tr><td>.WithPosition(Vector3)</td><td>World position for 3D audio</td></tr>
+                  <tr><td>.WithMixerGroup(AudioMixerGroup)</td><td>Route to a specific mixer group</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── Guide: Persistence ── -->
+        <section class="docs-section" id="guide-persistence">
+          <div class="section-eyebrow">Guides</div>
+          <h2 class="section-title">Persistence</h2>
+          <p class="section-intro">
+            Backend-agnostic save/load service. Swap between JSON files and PlayerPrefs via a single settings field — no code changes. Key-based storage with type-safe generics.
+          </p>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Setup</h3>
+            <p class="prose">Attach <code>PersistenceServiceHost</code> to your persistent GameObject. Create a <code>PersistenceSettings</code> ScriptableObject via <strong>Create → Utilities → Persistence Settings</strong> and assign it in the Inspector.</p>
+            <div class="table-wrap">
+              <table class="docs-table">
+                <thead><tr><th>Setting</th><th>Options</th><th>Description</th></tr></thead>
+                <tbody>
+                  <tr><td>Backend</td><td>JsonFile / PlayerPrefs</td><td>Storage backend. JsonFile writes to <code>Application.persistentDataPath/&lt;Folder&gt;/&lt;key&gt;.json</code></td></tr>
+                  <tr><td>Folder</td><td>string</td><td>Subdirectory for JSON files (e.g., <code>"SaveData"</code>)</td></tr>
+                  <tr><td>PrettyPrint</td><td>bool</td><td>Format JSON files for readability</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Save and load</h3>
+            <div class="code-card code-card--util">
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">PersistenceUsage.cs</span></div>
+<pre class="code-block"><code><span class="kw">using</span> Utilities.Persistence;
+
+<span class="cmt">// Save any [Serializable] type</span>
+<span class="type">PersistenceService</span>.Instance.Save(<span class="str">"player-progress"</span>, playerData);
+
+<span class="cmt">// Load — returns false if key doesn't exist</span>
+<span class="kw">if</span> (<span class="type">PersistenceService</span>.Instance.TryLoad(<span class="str">"player-progress"</span>, <span class="kw">out</span> <span class="type">PlayerData</span> loaded))
+{
+    Apply(loaded);
+}
+
+<span class="cmt">// Check existence, delete, flush PlayerPrefs to disk</span>
+<span class="kw">bool</span> exists = <span class="type">PersistenceService</span>.Instance.Exists(<span class="str">"player-progress"</span>);
+<span class="type">PersistenceService</span>.Instance.Delete(<span class="str">"player-progress"</span>);
+<span class="type">PersistenceService</span>.Instance.Flush(); <span class="cmt">// required for PlayerPrefs backend</span></code></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── Guide: Reporter ── -->
+        <section class="docs-section" id="guide-reporter">
+          <div class="section-eyebrow">Guides</div>
+          <h2 class="section-title">Reporter</h2>
+          <p class="section-intro">
+            Structured logging with level filtering, tag-based subsystem filtering, and scoped timing backed by Profiler markers. Verbose levels are stripped at compile time in Release builds.
+          </p>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Log levels</h3>
+            <p class="prose">Level hierarchy: <code>Trace &lt; Debug &lt; Info &lt; Warning &lt; Error &lt; Off</code>. <code>Trace</code> and <code>Debug</code> require scripting defines to be compiled in. <code>Info</code>, <code>Warning</code>, and <code>Error</code> are always compiled.</p>
+            <div class="code-card code-card--util">
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">Logging.cs</span></div>
+<pre class="code-block"><code><span class="kw">using</span> Utilities.Diagnostics;
+
+<span class="cmt">// Conditional — compiled only with REPORTER_TRACE define</span>
+Reporter.Trace(<span class="str">"Packet seq=42"</span>, tag: <span class="str">"Transport"</span>);
+
+<span class="cmt">// Conditional — compiled only with REPORTER_DEBUG define</span>
+Reporter.Dbg(<span class="str">"State machine: Idle → Running"</span>, tag: <span class="str">"AI"</span>);
+
+<span class="cmt">// Always compiled in</span>
+Reporter.Info(<span class="str">"Session started"</span>, tag: <span class="str">"Session"</span>);
+Reporter.Warn(<span class="str">"Config missing, using defaults"</span>, tag: <span class="str">"Config"</span>);
+Reporter.Error(<span class="str">"Tracking lost for 3.2s"</span>, tag: <span class="str">"XR"</span>);
+Reporter.Exception(ex, context: <span class="str">"LoadConfig"</span>, tag: <span class="str">"Config"</span>);</code></pre>
+            </div>
+          </div>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Runtime configuration</h3>
+            <div class="code-card code-card--util">
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">Bootstrap.cs</span></div>
+<pre class="code-block"><code><span class="cmt">// Suppress everything below Warning at runtime</span>
+Reporter.Level = <span class="type">ReportLevel</span>.Warning;
+
+<span class="cmt">// Focus logs on one subsystem</span>
+Reporter.TagFilter = <span class="str">"Streaming"</span>;
+
+<span class="cmt">// Or multiple subsystems</span>
+Reporter.AddTagFilter(<span class="str">"Signaling"</span>);
+Reporter.AddTagFilter(<span class="str">"Streaming"</span>);
+
+<span class="cmt">// Remove all tag filters</span>
+Reporter.ClearTagFilters();
+
+<span class="cmt">// Suppress everything globally</span>
+Reporter.Enabled = <span class="kw">false</span>;</code></pre>
+            </div>
+          </div>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Scoped timing</h3>
+            <p class="prose">Use <code>Reporter.Scope(name, tag)</code> to wrap an operation in a Profiler marker. The timing is recorded in a thread-safe metric registry with zero GC allocation. On the main thread, if <code>Reporter.LogTimings = true</code>, the duration is also emitted as a <code>Trace</code> log line.</p>
+            <div class="code-card code-card--util">
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">Timing.cs</span></div>
+<pre class="code-block"><code><span class="kw">void</span> DecodeMesh()
+{
+    <span class="kw">using var</span> scope = Reporter.Scope(<span class="str">"DecodeMesh"</span>, <span class="str">"Rendering"</span>);
+    <span class="cmt">// ... heavy work ...</span>
+} <span class="cmt">// timing automatically recorded on scope disposal</span></code></pre>
+            </div>
+          </div>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Compile-time stripping</h3>
+            <p class="prose">Add scripting defines in <strong>Project Settings → Player → Scripting Define Symbols</strong>:</p>
+            <div class="table-wrap">
+              <table class="docs-table">
+                <thead><tr><th>Define</th><th>Effect</th><th>Typical usage</th></tr></thead>
+                <tbody>
+                  <tr><td>REPORTER_TRACE</td><td>Compiles in <code>Reporter.Trace()</code> call sites</td><td>Editor, Dev builds</td></tr>
+                  <tr><td>REPORTER_DEBUG</td><td>Compiles in <code>Reporter.Dbg()</code> call sites</td><td>Editor, Dev builds</td></tr>
+                  <tr><td>(neither)</td><td>Both stripped from IL entirely — zero cost</td><td>Release / Shipping</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── API: MessageBus ── -->
+        <section class="docs-section" id="api-messagebus">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">MessageBus API</h2>
+          <p class="section-intro">Namespace: <code>Utilities.Messaging</code>. Access via <code>MessageBus.Instance</code>.</p>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">MessageBus</span>
+              <span class="api-type-badge badge--class">class</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">SubscriptionToken Subscribe&lt;T&gt;(MessageHandler&lt;T&gt; handler) where T : unmanaged, IMessage</div>
+                  <div class="api-member-desc">Registers a handler. Returns an integer token for unsubscription.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">bool Unsubscribe(SubscriptionToken token)</div>
+                  <div class="api-member-desc">Removes the handler associated with the token. Returns <code>false</code> if already removed.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">void Publish&lt;T&gt;(ref T message) where T : unmanaged, IMessage</div>
+                  <div class="api-member-desc">Dispatches immediately to all subscribers on the calling thread.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">void Enqueue&lt;T&gt;(in T message) where T : unmanaged, IMessage</div>
+                  <div class="api-member-desc">Thread-safe enqueue. Process with <code>DrainQueues()</code> on the main thread.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">void DrainQueues()</div>
+                  <div class="api-member-desc">Processes all enqueued messages. Call once per frame on the main thread.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--prop">prop</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">int ChannelCount { get; }</div>
+                  <div class="api-member-desc">Number of distinct message types with at least one active subscriber.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">int GetSubscriberCount&lt;T&gt;()</div>
+                  <div class="api-member-desc">Number of active subscribers for message type <code>T</code>.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">void Reset() / void Dispose()</div>
+                  <div class="api-member-desc">Clears all subscriptions and channels.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">MessageHandler&lt;T&gt;</span>
+              <span class="api-type-badge badge--delegate">delegate</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--field">sig</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">void MessageHandler&lt;T&gt;(ref T message) where T : unmanaged, IMessage</div>
+                  <div class="api-member-desc">Handler delegate. Receives the message by <code>ref</code> — no struct copy on dispatch.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── API: Timer ── -->
+        <section class="docs-section" id="api-timer">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">Timer API</h2>
+          <p class="section-intro">Namespace: <code>Utilities.Timing</code>. Access via <code>Timer.Instance</code>.</p>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">Timer</span>
+              <span class="api-type-badge badge--class">class</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">TimerHandle Schedule(float delay, Action callback)</div>
+                  <div class="api-member-desc">Fires <code>callback</code> once after <code>delay</code> seconds (scaled time).</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">TimerHandle Schedule(TimerParams @params, Action callback)</div>
+                  <div class="api-member-desc">Fires with full control over delay, repeat, and timescale.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">TimerHandle ScheduleRepeating(float interval, Action callback)</div>
+                  <div class="api-member-desc">Fires every <code>interval</code> seconds until cancelled.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">bool Cancel(TimerHandle handle)</div>
+                  <div class="api-member-desc">Cancels a scheduled timer. Returns <code>false</code> if already fired or cancelled (generation check — safe to call twice).</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">TimerParams</span>
+              <span class="api-type-badge badge--struct">readonly struct</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--field">static</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">static TimerParams Default</div>
+                  <div class="api-member-desc">1.0s delay, one-shot, scaled time.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">static TimerParams Repeat(float interval)</div>
+                  <div class="api-member-desc">Repeating with given interval, no initial delay.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">TimerParams WithDelay(float seconds)</div>
+                  <div class="api-member-desc">Set delay before first fire.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">TimerParams WithUnscaledTime(bool unscaled)</div>
+                  <div class="api-member-desc">Use <code>Time.unscaledTime</code> when <code>true</code>.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── API: AudioPlayer ── -->
+        <section class="docs-section" id="api-audioplayer">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">AudioPlayer API</h2>
+          <p class="section-intro">Namespace: <code>Utilities.Audio</code>. Access via <code>AudioPlayer.Instance</code>.</p>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">AudioPlayer</span>
+              <span class="api-type-badge badge--class">class</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">SoundHandle Play(AudioClip clip)</div>
+                  <div class="api-member-desc">Plays with default params (2D, volume 1, pitch 1).</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">SoundHandle Play(AudioClip clip, SoundParams @params)</div>
+                  <div class="api-member-desc">Plays with full control via <code>SoundParams</code>.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">bool Stop(SoundHandle handle)</div>
+                  <div class="api-member-desc">Stops playback and returns the source to the pool.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">bool Pause(SoundHandle handle) / bool Resume(SoundHandle handle)</div>
+                  <div class="api-member-desc">Pause or resume playback without releasing the pool slot.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">bool IsPlaying(SoundHandle handle)</div>
+                  <div class="api-member-desc">Returns <code>true</code> if the sound is still active.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">SoundParams</span>
+              <span class="api-type-badge badge--struct">readonly struct</span>
+            </div>
+            <div class="table-wrap">
+              <table class="docs-table">
+                <thead><tr><th>Method / Property</th><th>Description</th></tr></thead>
+                <tbody>
+                  <tr><td>SoundParams.Default</td><td>Volume 1, pitch 1, no loop, 2D, no position</td></tr>
+                  <tr><td>.WithVolume(float)</td><td>0–1</td></tr>
+                  <tr><td>.WithPitch(float)</td><td>Playback speed multiplier</td></tr>
+                  <tr><td>.WithLoop(bool)</td><td>Loop until stopped</td></tr>
+                  <tr><td>.WithSpatialBlend(float)</td><td>0 = 2D, 1 = 3D</td></tr>
+                  <tr><td>.WithPosition(Vector3)</td><td>World position for 3D audio</td></tr>
+                  <tr><td>.WithMixerGroup(AudioMixerGroup)</td><td>Route to mixer group</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── API: Persistence ── -->
+        <section class="docs-section" id="api-persistence">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">Persistence API</h2>
+          <p class="section-intro">Namespace: <code>Utilities.Persistence</code>. Access via <code>PersistenceService.Instance</code>.</p>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">PersistenceService</span>
+              <span class="api-type-badge badge--class">class</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">void Save&lt;T&gt;(string key, T data)</div>
+                  <div class="api-member-desc">Serializes and stores data under the given key. <code>T</code> must be <code>[Serializable]</code>.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">bool TryLoad&lt;T&gt;(string key, out T data)</div>
+                  <div class="api-member-desc">Loads and deserializes. Returns <code>false</code> if key does not exist.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">bool Exists(string key)</div>
+                  <div class="api-member-desc">Returns <code>true</code> if a saved value exists for the key.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">bool Delete(string key)</div>
+                  <div class="api-member-desc">Removes stored data for the key.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">void Flush()</div>
+                  <div class="api-member-desc">Commits pending writes. Required when using the PlayerPrefs backend.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── API: Reporter ── -->
+        <section class="docs-section" id="api-reporter">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">Reporter API</h2>
+          <p class="section-intro">Namespace: <code>Utilities.Diagnostics</code>. Static class — no singleton. Available to all layers.</p>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">Reporter</span>
+              <span class="api-type-badge badge--static">static class</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--field">static</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">static ReportLevel Level { get; set; }</div>
+                  <div class="api-member-desc">Runtime filter. Messages below this level are suppressed. Default: <code>Trace</code> in Editor, <code>Info</code> in builds.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--field">static</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">static bool Enabled { get; set; }</div>
+                  <div class="api-member-desc">Global on/off switch. When <code>false</code>, all output and metric accumulation is suppressed.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--field">static</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">static bool LogTimings { get; set; }</div>
+                  <div class="api-member-desc">When <code>true</code>, timing scopes emit a <code>Trace</code>-level log on the main thread. Default: <code>true</code> in Editor, <code>false</code> in builds.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">static void Trace(string msg, string tag) <span style="opacity:.5;font-size:.85em">[Conditional("REPORTER_TRACE")]</span></div>
+                  <div class="api-member-desc">High-frequency diagnostic. Zero IL in Release unless <code>REPORTER_TRACE</code> is defined.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">static void Dbg(string msg, string tag) <span style="opacity:.5;font-size:.85em">[Conditional("REPORTER_DEBUG")]</span></div>
+                  <div class="api-member-desc">Debug-level. Zero IL in Release unless <code>REPORTER_DEBUG</code> is defined.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">static void Info / Warn / Error(string msg, string tag)</div>
+                  <div class="api-member-desc">Always compiled. Filtered at runtime by <code>Reporter.Level</code>.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">static void Exception(Exception ex, string context, string tag)</div>
+                  <div class="api-member-desc">Logs with full stack trace preservation.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">static IDisposable Scope(string name, string tag)</div>
+                  <div class="api-member-desc">Returns a scoped timing token. Wrap in a <code>using</code> statement — timing is recorded on disposal.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">static void TagFilter / AddTagFilter(string tag) / ClearTagFilters()</div>
+                  <div class="api-member-desc">Filter output to specific subsystem tags. <code>null</code> tag filter shows all.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">ReportLevel</span>
+              <span class="api-type-badge badge--enum">Enum</span>
+            </div>
+            <div class="table-wrap">
+              <table class="docs-table">
+                <thead><tr><th>Value</th><th>Description</th></tr></thead>
+                <tbody>
+                  <tr><td>Trace</td><td>Highest verbosity. Requires <code>REPORTER_TRACE</code> define to compile.</td></tr>
+                  <tr><td>Debug</td><td>Requires <code>REPORTER_DEBUG</code> define to compile.</td></tr>
+                  <tr><td>Info</td><td>Always compiled. General lifecycle events.</td></tr>
+                  <tr><td>Warning</td><td>Always compiled. Potential issues.</td></tr>
+                  <tr><td>Error</td><td>Always compiled. Actionable failures.</td></tr>
+                  <tr><td>Off</td><td>Silences all output.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+      </div><!-- .docs-content -->
+    </main>
+  </div><!-- .docs-shell -->
+
+  <!-- Sidebar toggle (mobile) -->
+  <button class="sidebar-toggle-btn" aria-label="Toggle navigation sidebar">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+
+  <script src="src/main.js"></script>
+  <script src="src/docs.js"></script>
+</body>
+</html>
