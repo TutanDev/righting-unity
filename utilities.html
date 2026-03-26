@@ -57,6 +57,7 @@
             <a href="#guide-audioplayer" class="sidebar-link" data-pkg="util">AudioPlayer</a>
             <a href="#guide-persistence" class="sidebar-link" data-pkg="util">Persistence</a>
             <a href="#guide-reporter" class="sidebar-link" data-pkg="util">Reporter</a>
+            <a href="#guide-extensibility" class="sidebar-link" data-pkg="util">Extensibility</a>
           </div>
         </div>
 
@@ -71,6 +72,7 @@
             <a href="#api-audioplayer" class="sidebar-link" data-pkg="util">AudioPlayer</a>
             <a href="#api-persistence" class="sidebar-link" data-pkg="util">Persistence</a>
             <a href="#api-reporter" class="sidebar-link" data-pkg="util">Reporter</a>
+            <a href="#api-extensibility" class="sidebar-link" data-pkg="util">Extensibility</a>
           </div>
         </div>
       </nav>
@@ -82,7 +84,7 @@
       <!-- ── Getting Started Hero ── -->
       <section class="docs-hero" id="getting-started">
         <div class="docs-hero-glow" style="background:radial-gradient(ellipse, var(--util-glow) 0%, transparent 70%)" aria-hidden="true"></div>
-        <span class="docs-hero-badge docs-hero-badge--util">com.tutan.utilities · v0.2.1</span>
+        <span class="docs-hero-badge docs-hero-badge--util">com.tutan.utilities · v0.4.0</span>
         <h1 class="docs-hero-title">Zero-GC Infrastructure<br>for Every Unity Project</h1>
         <p class="docs-hero-desc">
           Five domain-agnostic services that live in the Utility bar of the architecture — available to every layer, allocating nothing on hot paths, optimized for XR frame budgets.
@@ -106,9 +108,9 @@
           </div>
         </div>
 
-        <div class="callout callout--warn" style="margin-top:8px">
-          <strong>Setup pattern</strong>
-          Every utility follows the same pattern: attach a <code>*Host</code> MonoBehaviour to a persistent GameObject, create a <code>*Settings</code> ScriptableObject, assign it in the Inspector. The singleton is set in <code>Awake</code> and cleared in <code>OnDestroy</code>.
+        <div class="callout callout--note" style="margin-top:8px">
+          <strong>Zero scene setup</strong>
+          Utilities bootstrap automatically via <code>[RuntimeInitializeOnLoadMethod(BeforeSceneLoad)]</code> — no scene GameObjects required. All host objects are parented under a single persistent <code>[UtilitiesHost]</code> root managed by the package.
         </div>
 
         <div class="steps" style="margin-top:28px">
@@ -122,22 +124,22 @@
           <div class="step">
             <div class="step-num" style="border-color:var(--util-color);color:var(--util-color)">2</div>
             <div class="step-body">
-              <div class="step-title">Create a persistent GameObject</div>
-              <div class="step-desc">Add a <strong>Services</strong> GameObject to your bootstrap scene and call <code>DontDestroyOnLoad</code> on it (or use your DI root).</div>
+              <div class="step-title">Initialize settings</div>
+              <div class="step-desc">Open <strong>Edit → Project Settings → Utilities</strong>. If no settings asset exists yet, click <strong>Initialize Utilities Settings</strong> — this creates <code>Assets/Resources/Utilities/UtilitiesSettings.asset</code> with all built-in utilities enabled.</div>
             </div>
           </div>
           <div class="step">
             <div class="step-num" style="border-color:var(--util-color);color:var(--util-color)">3</div>
             <div class="step-body">
-              <div class="step-title">Attach Host components</div>
-              <div class="step-desc">Add <code>MessageBusHost</code>, <code>TimerHost</code>, <code>AudioPlayerHost</code>, <code>PersistenceServiceHost</code> to the GameObject. Each registers its singleton on Awake.</div>
+              <div class="step-title">Enable and configure</div>
+              <div class="step-desc">Each utility has a toggle and inline settings. Disable utilities you don't need — they are skipped entirely at startup. Settings are stored as sub-assets of <code>UtilitiesSettings.asset</code> and committed to version control.</div>
             </div>
           </div>
           <div class="step">
             <div class="step-num" style="border-color:var(--util-color);color:var(--util-color)">4</div>
             <div class="step-body">
-              <div class="step-title">Configure via Settings assets</div>
-              <div class="step-desc">Create <code>*Settings</code> ScriptableObjects via <strong>Create → Utilities → …</strong> and assign them to the Host components in the Inspector.</div>
+              <div class="step-title">Add custom utilities (optional)</div>
+              <div class="step-desc">Implement <code>IUtilityInstaller</code> and tag your class with <code>[Utility]</code>. It appears in the panel automatically on the next assembly reload — no changes to the package required. See the <a href="#guide-extensibility" style="color:var(--util-color)">Extensibility guide</a>.</div>
             </div>
           </div>
         </div>
@@ -227,7 +229,7 @@
 
           <div class="sub-section">
             <h3 class="sub-title">Setup</h3>
-            <p class="prose">Attach <code>TimerHost</code> to your persistent GameObject. Optionally create a <code>TimerSettings</code> ScriptableObject to configure pool size. Access via <code>Timer.Instance</code>.</p>
+            <p class="prose">Enabled by default in <strong>Project Settings → Utilities</strong>. Configure pool size via the inline <code>TimerSettings</code>. Access via <code>Timer.Instance</code> — available from <code>BeforeSceneLoad</code> onward.</p>
           </div>
 
           <div class="sub-section">
@@ -282,7 +284,7 @@
 
           <div class="sub-section">
             <h3 class="sub-title">Setup</h3>
-            <p class="prose">Attach <code>AudioPlayerHost</code> to your persistent GameObject. Optionally create an <code>AudioPlayerSettings</code> ScriptableObject to configure pool size. Access via <code>AudioPlayer.Instance</code>.</p>
+            <p class="prose">Enabled by default in <strong>Project Settings → Utilities</strong>. Configure pool size via the inline <code>AudioPlayerSettings</code>. Access via <code>AudioPlayer.Instance</code> — available from <code>BeforeSceneLoad</code> onward.</p>
           </div>
 
           <div class="sub-section">
@@ -338,7 +340,7 @@
 
           <div class="sub-section">
             <h3 class="sub-title">Setup</h3>
-            <p class="prose">Attach <code>PersistenceServiceHost</code> to your persistent GameObject. Create a <code>PersistenceSettings</code> ScriptableObject via <strong>Create → Utilities → Persistence Settings</strong> and assign it in the Inspector.</p>
+            <p class="prose">Enabled by default in <strong>Project Settings → Utilities</strong>. Configure backend, folder, and pretty-print via the inline <code>PersistenceSettings</code>. Access via <code>PersistenceService.Instance</code>.</p>
             <div class="table-wrap">
               <table class="docs-table">
                 <thead><tr><th>Setting</th><th>Options</th><th>Description</th></tr></thead>
@@ -451,6 +453,92 @@ Reporter.Enabled = <span class="kw">false</span>;</code></pre>
                 </tbody>
               </table>
             </div>
+          </div>
+        </section>
+
+        <!-- ── Guide: Extensibility ── -->
+        <section class="docs-section" id="guide-extensibility">
+          <div class="section-eyebrow">Guides</div>
+          <h2 class="section-title">Extensibility</h2>
+          <p class="section-intro">
+            Any assembly that references <code>com.tutan.utilities</code> can register new utilities that appear in <strong>Project Settings → Utilities</strong> and are installed automatically at runtime — with zero changes to the package itself.
+          </p>
+
+          <div class="sub-section">
+            <h3 class="sub-title">How registration works</h3>
+            <p class="prose">On every assembly reload, the settings provider calls <code>TypeCache.GetTypesDerivedFrom&lt;IUtilityInstaller&gt;()</code>, filters for types marked with <code>[Utility]</code>, and syncs entries in <code>UtilitiesSettingsAsset</code>. New types appear as disabled entries; existing entries preserve their toggle state and config reference.</p>
+            <div class="table-wrap">
+              <table class="docs-table">
+                <thead><tr><th>Component</th><th>Purpose</th></tr></thead>
+                <tbody>
+                  <tr><td><code>[Utility]</code> attribute</td><td>Supplies display metadata and links the installer to its config type</td></tr>
+                  <tr><td><code>IUtilityInstaller</code></td><td>Contains the bootstrap logic — creates MonoBehaviour hosts, configures singletons</td></tr>
+                  <tr><td><code>UtilityConfig</code> subclass</td><td>Optional ScriptableObject for per-utility settings</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Minimal example (no config)</h3>
+            <div class="code-card code-card--util">
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">HeartbeatInstaller.cs</span></div>
+<pre class="code-block"><code><span class="kw">using</span> UnityEngine;
+<span class="kw">using</span> Utilities;
+
+[<span class="type">Utility</span>(<span class="str">"Heartbeat"</span>, <span class="str">"Logs a heartbeat message every 5 seconds."</span>)]
+<span class="kw">public sealed class</span> <span class="type">HeartbeatInstaller</span> : <span class="type">IUtilityInstaller</span>
+{
+    <span class="kw">public void</span> Install(<span class="type">UtilityConfig</span> config, <span class="type">Transform</span> hostRoot)
+    {
+        <span class="kw">var</span> go = <span class="kw">new</span> <span class="type">GameObject</span>(<span class="str">"[HeartbeatHost]"</span>);
+        go.transform.SetParent(hostRoot, <span class="kw">false</span>);
+        go.AddComponent&lt;<span class="type">HeartbeatHost</span>&gt;();
+    }
+}</code></pre>
+            </div>
+            <p class="prose" style="margin-top:12px">After compile: open <strong>Edit → Project Settings → Utilities</strong>. "Heartbeat" appears in the list. Toggle it on — at runtime, <code>[HeartbeatHost]</code> is created under <code>[UtilitiesHost]</code>.</p>
+          </div>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Full example (with config)</h3>
+            <div class="code-card code-card--util">
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">HeartbeatInstaller.cs</span></div>
+<pre class="code-block"><code><span class="cmt">// Step 1: Define a config class</span>
+<span class="kw">public sealed class</span> <span class="type">HeartbeatSettings</span> : <span class="type">UtilityConfig</span>
+{
+    [<span class="type">SerializeField</span>] <span class="kw">public float</span> Interval = <span class="num">5f</span>;
+    [<span class="type">SerializeField</span>] <span class="kw">public string</span> Message = <span class="str">"alive"</span>;
+}
+
+<span class="cmt">// Step 2: Reference it in the [Utility] attribute</span>
+[<span class="type">Utility</span>(<span class="str">"Heartbeat"</span>, <span class="str">"Logs a heartbeat at a configurable interval."</span>, <span class="kw">typeof</span>(<span class="type">HeartbeatSettings</span>))]
+<span class="kw">public sealed class</span> <span class="type">HeartbeatInstaller</span> : <span class="type">IUtilityInstaller</span>
+{
+    <span class="kw">public void</span> Install(<span class="type">UtilityConfig</span> config, <span class="type">Transform</span> hostRoot)
+    {
+        <span class="kw">var</span> settings = config <span class="kw">as</span> <span class="type">HeartbeatSettings</span>;
+        <span class="kw">var</span> go = <span class="kw">new</span> <span class="type">GameObject</span>(<span class="str">"[HeartbeatHost]"</span>);
+        go.transform.SetParent(hostRoot, <span class="kw">false</span>);
+        go.AddComponent&lt;<span class="type">HeartbeatHost</span>&gt;().Init(settings);
+    }
+}</code></pre>
+            </div>
+            <p class="prose" style="margin-top:12px">When <code>configType</code> is set, the editor auto-creates a <code>HeartbeatSettings</code> sub-asset inside <code>UtilitiesSettings.asset</code>. Its fields appear inline in the panel when the toggle is on.</p>
+          </div>
+
+          <div class="sub-section">
+            <h3 class="sub-title">IUtilityInstaller contract</h3>
+            <p class="prose"><code>config</code> is the linked <code>UtilityConfig</code> sub-asset, or <code>null</code> if no config type was set. Always null-guard before casting. <code>hostRoot</code> is the <code>Transform</code> of the persistent <code>[UtilitiesHost]</code> — parent all host GameObjects here. <code>Install</code> is called synchronously during <code>BeforeSceneLoad</code>; avoid heavy I/O or async work inside it.</p>
+            <div class="callout callout--note" style="margin-top:12px">
+              <strong>Static utilities</strong>
+              Not every utility needs a MonoBehaviour. Pass <code>_</code> as <code>hostRoot</code> and configure a static facade directly — see <code>Reporter</code> as an example of this pattern.
+            </div>
+          </div>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Renaming installer classes</h3>
+            <p class="prose">The installer type is stored as an <code>AssemblyQualifiedName</code>. Renaming or moving the class breaks the stored reference — the stale entry logs a warning and is skipped. The renamed class appears as a new disabled entry. Re-enable it and remove the orphan entry, or update the <code>_installerTypeName</code> string in the <code>.asset</code> file directly before shipping.</p>
           </div>
         </section>
 
@@ -841,6 +929,75 @@ Reporter.Enabled = <span class="kw">false</span>;</code></pre>
                   <tr><td>Off</td><td>Silences all output.</td></tr>
                 </tbody>
               </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── API: Extensibility ── -->
+        <section class="docs-section" id="api-extensibility">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">Extensibility API</h2>
+          <p class="section-intro">Namespace: <code>Utilities</code>. Types needed to register a custom utility.</p>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">[Utility]</span>
+              <span class="api-type-badge badge--class">attribute</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--field">param</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">string name <span style="opacity:.5;font-size:.85em">required</span></div>
+                  <div class="api-member-desc">Display name shown as the header in Project Settings → Utilities.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--field">param</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">string description <span style="opacity:.5;font-size:.85em">optional</span></div>
+                  <div class="api-member-desc">Shown in grey below the header in the panel.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--field">param</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">Type configType <span style="opacity:.5;font-size:.85em">optional</span></div>
+                  <div class="api-member-desc">Must derive from <code>UtilityConfig</code>. When set, the editor auto-creates and links a config sub-asset. Its fields appear inline in the panel.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">IUtilityInstaller</span>
+              <span class="api-type-badge badge--class">interface</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">void Install(UtilityConfig config, Transform hostRoot)</div>
+                  <div class="api-member-desc">Called synchronously during <code>BeforeSceneLoad</code>. <code>config</code> is the linked sub-asset or <code>null</code> — always null-guard. Parent host GameObjects to <code>hostRoot</code>; do not call <code>DontDestroyOnLoad</code> on them individually. Installers must have a public parameterless constructor.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">UtilityConfig</span>
+              <span class="api-type-badge badge--class">abstract class</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--field">base</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">ScriptableObject</div>
+                  <div class="api-member-desc">Subclass this to define per-utility settings. Add <code>[SerializeField]</code> fields — they appear inline in the Project Settings panel. Cast <code>config</code> to your subtype inside <code>Install</code>.</div>
+                </div>
+              </div>
             </div>
           </div>
         </section>

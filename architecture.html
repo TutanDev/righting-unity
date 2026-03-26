@@ -56,6 +56,7 @@
             <a href="#guide-tagging" class="sidebar-link" data-pkg="arch">Tagging Your Code</a>
             <a href="#guide-usecases" class="sidebar-link" data-pkg="arch">Use Cases &amp; Events</a>
             <a href="#guide-validation" class="sidebar-link" data-pkg="arch">Validation Rules</a>
+            <a href="#guide-custom-rules" class="sidebar-link" data-pkg="arch">Custom Rules</a>
             <a href="#guide-settings" class="sidebar-link" data-pkg="arch">Settings &amp; Enforcement</a>
           </div>
         </div>
@@ -83,7 +84,7 @@
       <!-- ── Getting Started Hero ── -->
       <section class="docs-hero" id="getting-started">
         <div class="docs-hero-glow" style="background:radial-gradient(ellipse, var(--arch-glow) 0%, transparent 70%)" aria-hidden="true"></div>
-        <span class="docs-hero-badge docs-hero-badge--arch">com.tutan.architecture · v0.1.0</span>
+        <span class="docs-hero-badge docs-hero-badge--arch">com.tutan.architecture · v0.4.0</span>
         <h1 class="docs-hero-title">Enforce Architecture<br>at Compile Time</h1>
         <p class="docs-hero-desc">
           UP-Architecture implements Löwy's Method in Unity. Tag your types, and the validator enforces a strict 5-layer topology — no upward calls, no skipped layers, no sideways dependencies.
@@ -98,7 +99,7 @@
             <span class="docs-stat-label">Rule Sets</span>
           </div>
           <div>
-            <span class="docs-stat-value" style="color:var(--arch-color)">12+</span>
+            <span class="docs-stat-value" style="color:var(--arch-color)">24+</span>
             <span class="docs-stat-label">Validations</span>
           </div>
           <div>
@@ -132,8 +133,8 @@
           <div class="step">
             <div class="step-num" style="border-color:var(--arch-color);color:var(--arch-color)">4</div>
             <div class="step-body">
-              <div class="step-title">Create a Settings asset</div>
-              <div class="step-desc">Open <strong>Window → Architecture → Create Settings Asset</strong> to configure enforcement mode (WarningsOnly → Strict) and utility assembly names.</div>
+              <div class="step-title">Configure enforcement</div>
+              <div class="step-desc">Open <strong>Edit → Project Settings → Architecture</strong>. The settings asset is created automatically on first visit. Set enforcement mode (WarningsOnly → Strict), add utility assembly names, and run validation inline from the same panel.</div>
             </div>
           </div>
         </div>
@@ -286,6 +287,25 @@
 }</code></pre>
             </div>
           </div>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Right-click context menu</h3>
+            <p class="prose">Right-click any <code>.cs</code> file in the Project window and choose <strong>Architecture → Assign Layer → …</strong> to insert (or replace) the layer attribute directly in the source file. This avoids typing the attribute manually and handles the case where a different layer attribute is already present.</p>
+            <div class="table-wrap">
+              <table class="docs-table">
+                <thead><tr><th>Menu item</th><th>Inserts</th></tr></thead>
+                <tbody>
+                  <tr><td>Assign Layer → Client</td><td><code>[Client]</code></td></tr>
+                  <tr><td>Assign Layer → Manager</td><td><code>[Manager]</code></td></tr>
+                  <tr><td>Assign Layer → Engine</td><td><code>[Engine]</code></td></tr>
+                  <tr><td>Assign Layer → ResourceAccess</td><td><code>[ResourceAccess]</code></td></tr>
+                  <tr><td>Assign Layer → Resource</td><td><code>[Resource]</code></td></tr>
+                  <tr><td>Assign Layer → Utility</td><td><code>[Utility]</code></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="prose" style="margin-top:12px">The menu only activates when a single <code>.cs</code> file is selected. If no public class, struct, or interface is found in the file, a warning is logged and no changes are made.</p>
+          </div>
         </section>
 
         <!-- ── Guide: Use Cases & Events ── -->
@@ -351,17 +371,17 @@
               <tbody>
                 <tr><td>ARCH001</td><td>Closed Architecture</td><td>Dependencies only flow downward through adjacent layers. No skipping layers, no upward calls.</td></tr>
                 <tr><td>DONT001</td><td>Design Don'ts</td><td>Client calls only one Manager per use case entry point.</td></tr>
-                <tr><td>DONT002</td><td>Design Don'ts</td><td>Manager does not call another Manager directly.</td></tr>
-                <tr><td>DONT006</td><td>Design Don'ts</td><td>Engine does not call upward into Manager or Client.</td></tr>
+                <tr><td>DONT002</td><td>Design Don'ts</td><td>Client must not depend on an Engine directly — must go through a Manager.</td></tr>
+                <tr><td>DONT006</td><td>Design Don'ts</td><td>Engine, ResourceAccess, and Resource must not access the MessageBus — only Managers may publish or subscribe.</td></tr>
                 <tr><td>DONT011</td><td>Design Don'ts</td><td>Engine does not call another Engine.</td></tr>
                 <tr><td>DONT012</td><td>Design Don'ts</td><td>ResourceAccess does not call another ResourceAccess.</td></tr>
                 <tr><td>NAME001</td><td>Naming</td><td>Manager types end with <code>Manager</code>; Engine types end with <code>Engine</code>.</td></tr>
                 <tr><td>NAME002</td><td>Naming</td><td>ResourceAccess types end with <code>Access</code>.</td></tr>
                 <tr><td>ASMREF001</td><td>Assembly</td><td><code>.asmdef</code> hard references respect the layer topology.</td></tr>
                 <tr><td>MSGBUS001–007</td><td>Message Bus</td><td>Pub/sub declarations match layer roles. Only Managers publish events. Only Clients and Managers subscribe.</td></tr>
-                <tr><td>USECASE001</td><td>Use Cases</td><td>Each <code>[UseCase]</code> chain reaches ResourceAccess or Resource.</td></tr>
-                <tr><td>USECASE002</td><td>Use Cases</td><td>Use case call chains have no topology violations.</td></tr>
-                <tr><td>USECASE003</td><td>Use Cases</td><td>Use case chains are not orphaned (no dead-end Managers).</td></tr>
+                <tr><td>USECASE001</td><td>Use Cases</td><td>Use case call chain contains a topology violation.</td></tr>
+                <tr><td>USECASE002</td><td>Use Cases</td><td>Use case chain does not reach ResourceAccess or Resource — may be incomplete.</td></tr>
+                <tr><td>USECASE003</td><td>Use Cases</td><td>Use case chain depth asymmetry — possible uneven decomposition.</td></tr>
                 <tr><td>STRUCT001–005</td><td>Structure Metrics</td><td>Composition metrics: golden ratio, subsystem balance guidance.</td></tr>
               </tbody>
             </table>
@@ -382,8 +402,8 @@
           </p>
 
           <div class="sub-section">
-            <h3 class="sub-title">Creating the settings asset</h3>
-            <p class="prose">Open <strong>Window → Architecture → Create Settings Asset</strong>. The asset is created at <code>Assets/Resources/Framework/FrameworkSettings.asset</code>. Select it to configure enforcement mode and utility assembly names.</p>
+            <h3 class="sub-title">Project Settings panel</h3>
+            <p class="prose">Open <strong>Edit → Project Settings → Architecture</strong>. The settings asset (<code>Assets/Resources/Framework/FrameworkSettings.asset</code>) is created automatically on first visit. From this panel you can set enforcement mode, configure utility assemblies, and run validation inline — all in one place. The panel shows violations with severity filtering, text search, and a detail pane with the rule's <em>Why</em> and a <em>Fix suggestion</em>.</p>
           </div>
 
           <div class="sub-section">
@@ -404,6 +424,97 @@
           <div class="sub-section">
             <h3 class="sub-title">Utility assemblies</h3>
             <p class="prose">Add assembly names to <code>FrameworkSettings.UtilityAssemblies</code> to treat entire assemblies as cross-cutting. Useful for third-party libraries (DOTween, UniTask) that every layer legitimately calls.</p>
+          </div>
+
+          <div class="sub-section">
+            <h3 class="sub-title">CI / headless validation</h3>
+            <p class="prose"><code>CIValidator</code> provides a static entry point for Unity batch mode. It scans, validates, writes a JSON report to <code>architecture-report.json</code>, and exits with code <code>0</code> (clean) or <code>1</code> (errors found).</p>
+            <div class="code-card code-card--arch">
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">CI pipeline</span></div>
+<pre class="code-block"><code>Unity.exe -batchmode -projectPath . \
+  -executeMethod Tutan.Architecture.Editor.CIValidator.Run \
+  -quit</code></pre>
+            </div>
+            <div class="table-wrap" style="margin-top:12px">
+              <table class="docs-table">
+                <thead><tr><th>Exit code</th><th>Meaning</th></tr></thead>
+                <tbody>
+                  <tr><td>0</td><td>No Error-severity violations found</td></tr>
+                  <tr><td>1</td><td>One or more Error-severity violations found</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── Guide: Custom Rules ── -->
+        <section class="docs-section" id="guide-custom-rules">
+          <div class="section-eyebrow">Guides</div>
+          <h2 class="section-title">Custom Rules</h2>
+          <p class="section-intro">
+            Implement <code>IArchitectureRule</code> to add project-specific validation. Custom rules receive the full registry and return <code>ValidationResult</code> structs — no changes to the package required.
+          </p>
+
+          <div class="sub-section">
+            <h3 class="sub-title">IArchitectureRule interface</h3>
+            <div class="code-card code-card--arch">
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">IArchitectureRule.cs</span></div>
+<pre class="code-block"><code><span class="kw">public interface</span> <span class="type">IArchitectureRule</span>
+{
+    <span class="kw">string</span> RuleId { <span class="kw">get</span>; }
+    IEnumerable&lt;<span class="type">ValidationResult</span>&gt; Validate(<span class="type">ArchitectureRegistry</span> registry);
+}</code></pre>
+            </div>
+          </div>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Example: ban singleton Managers</h3>
+            <div class="code-card code-card--arch">
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">NoSingletonRule.cs</span></div>
+<pre class="code-block"><code><span class="kw">using</span> Tutan.Architecture.Editor;
+
+<span class="kw">public class</span> <span class="type">NoSingletonRule</span> : <span class="type">IArchitectureRule</span>
+{
+    <span class="kw">public string</span> RuleId => <span class="str">"CUSTOM001"</span>;
+
+    <span class="kw">public</span> IEnumerable&lt;<span class="type">ValidationResult</span>&gt; Validate(<span class="type">ArchitectureRegistry</span> registry)
+    {
+        <span class="kw">foreach</span> (<span class="kw">var</span> kvp <span class="kw">in</span> registry.TypeMap)
+        {
+            <span class="kw">var</span> type = kvp.Key;
+            <span class="kw">var</span> info = kvp.Value;
+            <span class="kw">if</span> (info.Layer != <span class="type">ArchitectureLayer</span>.Manager) <span class="kw">continue</span>;
+
+            <span class="kw">var</span> prop = type.GetProperty(<span class="str">"Instance"</span>,
+                BindingFlags.Public | BindingFlags.Static);
+
+            <span class="kw">if</span> (prop != <span class="kw">null</span>)
+                <span class="kw">yield return new</span> <span class="type">ValidationResult</span>(
+                    RuleId, <span class="type">ValidationSeverity</span>.Warning,
+                    $<span class="str">"Manager '{type.Name}' exposes a static Instance — prefer injection"</span>,
+                    type);
+        }
+    }
+}</code></pre>
+            </div>
+          </div>
+
+          <div class="sub-section">
+            <h3 class="sub-title">Passing custom rules to LayerValidator</h3>
+            <div class="code-card code-card--arch">
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">RunCustomValidation.cs</span></div>
+<pre class="code-block"><code><span class="kw">var</span> rules = <span class="kw">new</span> <span class="type">IArchitectureRule</span>[]
+{
+    <span class="kw">new</span> <span class="type">ClosedArchitectureRule</span>(),
+    <span class="kw">new</span> <span class="type">DesignDontRules</span>(),
+    <span class="kw">new</span> <span class="type">NamingConventionRule</span>(),
+    <span class="kw">new</span> <span class="type">NoSingletonRule</span>(),  <span class="cmt">// custom</span>
+};
+
+<span class="kw">var</span> validator = <span class="kw">new</span> <span class="type">LayerValidator</span>(rules);
+<span class="kw">var</span> results = validator.ScanAndValidate();</code></pre>
+            </div>
+            <p class="prose" style="margin-top:12px">The constructor overload accepts any <code>IEnumerable&lt;IArchitectureRule&gt;</code> — mix built-in and custom rules in any order. Use this from an Editor script, CI runner, or custom menu item.</p>
           </div>
         </section>
 
@@ -677,6 +788,13 @@
                 </div>
               </div>
               <div class="api-member">
+                <span class="api-kind kind--ctor">ctor</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">LayerValidator(IEnumerable&lt;IArchitectureRule&gt; rules)</div>
+                  <div class="api-member-desc">Creates a validator with a custom rule set. Mix built-in and custom rules in any order. Used for CI scripts and custom tooling.</div>
+                </div>
+              </div>
+              <div class="api-member">
                 <span class="api-kind kind--method">method</span>
                 <div class="api-member-content">
                   <div class="api-member-name">List&lt;ValidationResult&gt; ScanAndValidate()</div>
@@ -764,6 +882,7 @@
             <table class="docs-table">
               <thead><tr><th>Window</th><th>Menu Path</th><th>Description</th></tr></thead>
               <tbody>
+                <tr><td>ArchitectureSettingsProvider</td><td>Edit → Project Settings → Architecture</td><td>Unified panel — configure enforcement mode and utility assemblies, then run validation inline. Violations list with severity filter, search, and a detail pane showing the rule's <em>Why</em> and a <em>Fix suggestion</em>. Settings asset is auto-created on first visit.</td></tr>
                 <tr><td>DependencyGraphWindow</td><td>Window → Architecture → Dependency Graph</td><td>Interactive layer-banded graph. Nodes grouped by layer, edges colored by validity. Filter by layer and kind. Toggle <em>Violations Only</em>. Single-click to ping in Project; double-click to open script.</td></tr>
                 <tr><td>ValidationWindow</td><td>Window → Architecture → Validation</td><td>Tabbed window — <em>Violations</em> list with rule IDs and source types; <em>Use Cases</em> tab with BFS chains and USECASE results.</td></tr>
               </tbody>
