@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Functional — API Reference — Unity Framework</title>
+  <meta name="description" content="UP-Functional API Reference: complete type and member documentation for Optional&lt;T&gt;, Result&lt;T&gt;, Error, and the F module.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/styles.css">
+  <link rel="stylesheet" href="src/docs.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/favicon/favicon-32x32.png" alt="" class="nav-logo-icon" aria-hidden="true">
+        Unity Framework
+      </a>
+      <div class="nav-links">
+        <a href="architecture.html" class="nav-link">Architecture</a>
+        <a href="functional.html" class="nav-link" style="color:var(--func-color)">Functional</a>
+        <a href="utilities.html" class="nav-link">Utilities</a>
+      </div>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="docs-shell">
+
+    <!-- Sidebar -->
+    <aside class="docs-sidebar" aria-label="Documentation navigation">
+      <div class="sidebar-header">
+        <a href="index.html" class="sidebar-back">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+          Back to home
+        </a>
+        <span class="sidebar-pkg-id sidebar-pkg-id--func">com.tutan.functional</span>
+        <div class="sidebar-pkg-name">Functional</div>
+      </div>
+      <nav class="sidebar-nav" aria-label="Page sections">
+        <a href="functional.html" class="sidebar-direct" data-pkg="func">← Guides</a>
+
+        <div class="sidebar-group open">
+          <button class="sidebar-group-btn" aria-expanded="true">
+            API Reference
+            <svg class="sidebar-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="sidebar-items">
+            <a href="#api-optional" class="sidebar-link" data-pkg="func">Optional&lt;T&gt;</a>
+            <a href="#api-result" class="sidebar-link" data-pkg="func">Result&lt;T&gt;</a>
+            <a href="#api-error" class="sidebar-link" data-pkg="func">Error</a>
+            <a href="#api-validator" class="sidebar-link" data-pkg="func">Validator&lt;T&gt;</a>
+            <a href="#api-f" class="sidebar-link" data-pkg="func">F Module</a>
+            <a href="#api-extensions" class="sidebar-link" data-pkg="func">Extensions</a>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main content -->
+    <main class="docs-main">
+
+      <div class="docs-content">
+
+        <!-- ── API: Optional<T> ── -->
+        <section class="docs-section" id="api-optional">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">Optional&lt;T&gt;</h2>
+          <p class="section-intro"><code>readonly record struct</code> in <code>Tutan.Functional</code>.</p>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">Optional&lt;T&gt;</span>
+              <span class="api-type-badge badge--struct">struct</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--prop">prop</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">bool IsSome { get; }</div>
+                  <div class="api-member-desc"><code>true</code> when a value is present.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--prop">prop</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">bool IsNone { get; }</div>
+                  <div class="api-member-desc"><code>true</code> when absent.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">R Match&lt;R&gt;(Func&lt;R&gt; onNone, Func&lt;T,R&gt; onSome)</div>
+                  <div class="api-member-desc">Extracts the value by exhaustive pattern matching. Forces handling both cases.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">OptionalExtensions</span>
+              <span class="api-type-badge badge--static">extensions</span>
+            </div>
+            <div class="table-wrap">
+              <table class="docs-table">
+                <thead><tr><th>Method</th><th>Description</th></tr></thead>
+                <tbody>
+                  <tr><td>Then(Func&lt;T,R&gt;)</td><td>Map — applies func if <code>Some</code>, passes <code>None</code> through</td></tr>
+                  <tr><td>Then(Func&lt;T,Optional&lt;R&gt;&gt;)</td><td>Bind — flatMap, unwraps nested Optional</td></tr>
+                  <tr><td>Then(Action&lt;T&gt;)</td><td>Side-effect pass-through — returns <code>Optional&lt;T&gt;</code> unchanged</td></tr>
+                  <tr><td>Filter(Func&lt;T,bool&gt;)</td><td>Returns <code>None</code> if predicate fails</td></tr>
+                  <tr><td>Or(T fallback)</td><td>Returns value or eager fallback</td></tr>
+                  <tr><td>OrElse(Func&lt;T&gt;)</td><td>Returns value or lazy fallback</td></tr>
+                  <tr><td>HasValue(out T)</td><td>Out-param extraction; returns <code>false</code> for <code>None</code></td></tr>
+                  <tr><td>ValueUnsafe()</td><td>Throws <code>InvalidOperationException</code> on <code>None</code></td></tr>
+                  <tr><td>AsEnumerable()</td><td>Zero or one element; safe to iterate with foreach</td></tr>
+                  <tr><td>ToResult(Func&lt;Error&gt;)</td><td>Converts <code>None</code> to an error</td></tr>
+                  <tr><td>Map / Bind</td><td>Aliases for <code>Then</code> overloads</td></tr>
+                  <tr><td>Select / Where / SelectMany</td><td>LINQ query syntax support</td></tr>
+                  <tr><td>ThenAsync / MatchAsync</td><td>UniTask async counterparts</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── API: Result<T> ── -->
+        <section class="docs-section" id="api-result">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">Result&lt;T&gt;</h2>
+          <p class="section-intro"><code>readonly record struct</code> in <code>Tutan.Functional</code>.</p>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">Result&lt;T&gt;</span>
+              <span class="api-type-badge badge--struct">struct</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--prop">prop</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">bool IsSuccess { get; }</div>
+                  <div class="api-member-desc"><code>true</code> when the operation succeeded.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--prop">prop</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">bool IsError { get; }</div>
+                  <div class="api-member-desc"><code>true</code> when the operation failed.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">R Match&lt;R&gt;(Func&lt;Error,R&gt; onError, Func&lt;T,R&gt; onSuccess)</div>
+                  <div class="api-member-desc">Exhaustive pattern match. Forces handling both success and error cases.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">ResultExtensions</span>
+              <span class="api-type-badge badge--static">extensions</span>
+            </div>
+            <div class="table-wrap">
+              <table class="docs-table">
+                <thead><tr><th>Method</th><th>Description</th></tr></thead>
+                <tbody>
+                  <tr><td>Then(Func&lt;T,R&gt;)</td><td>Map — applies func on success; passes error through</td></tr>
+                  <tr><td>Then(Func&lt;T,Result&lt;R&gt;&gt;)</td><td>Bind — flatMap, propagates errors</td></tr>
+                  <tr><td>Then(Action&lt;T&gt;)</td><td>Side-effect pass-through</td></tr>
+                  <tr><td>Filter(Func&lt;T,bool&gt;)</td><td>Converts failing predicate to <code>Error("Predicate not satisfied")</code></td></tr>
+                  <tr><td>Or(T fallback)</td><td>Returns value or fallback on error</td></tr>
+                  <tr><td>OrElse(Func&lt;T&gt;)</td><td>Lazy fallback on error</td></tr>
+                  <tr><td>OrElse(Func&lt;Error,T&gt;)</td><td>Lazy fallback with access to the error</td></tr>
+                  <tr><td>IsSuccess(out T)</td><td>Out-param extraction; returns <code>false</code> on error</td></tr>
+                  <tr><td>ValueUnsafe() / ErrorUnsafe()</td><td>Unsafe extraction; throw on wrong state</td></tr>
+                  <tr><td>ForEach(Action&lt;T&gt;)</td><td>Side-effect, returns <code>Result&lt;Unit&gt;</code></td></tr>
+                  <tr><td>AsEnumerable()</td><td>Zero or one element</td></tr>
+                  <tr><td>ToOptional()</td><td>Discards the error, converts success to <code>Some</code></td></tr>
+                  <tr><td>Map / Bind</td><td>Aliases for <code>Then</code> overloads</td></tr>
+                  <tr><td>Select / SelectMany</td><td>LINQ query syntax support</td></tr>
+                  <tr><td>ThenAsync / MatchAsync</td><td>UniTask async counterparts</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── API: Error ── -->
+        <section class="docs-section" id="api-error">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">Error</h2>
+          <p class="section-intro"><code>readonly struct</code>, <code>IEquatable&lt;Error&gt;</code>. 16 bytes on 64-bit. Implicit cast from <code>string</code>.</p>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">Error</span>
+              <span class="api-type-badge badge--struct">struct</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--ctor">ctor</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">Error(string message)</div>
+                  <div class="api-member-desc">Simple error with a message.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--ctor">ctor</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">Error(string message, Error inner)</div>
+                  <div class="api-member-desc">Nested error — wraps a cause. Equivalent to <code>Exception.InnerException</code>.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--ctor">ctor</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">Error(IEnumerable&lt;Error&gt; errors)</div>
+                  <div class="api-member-desc">Composite error — joins all messages with <code>"; "</code>, stores all as inner errors.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--prop">prop</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">string Message { get; }</div>
+                  <div class="api-member-desc">Human-readable error description.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--prop">prop</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">ReadOnlySpan&lt;Error&gt; InnerErrors { get; }</div>
+                  <div class="api-member-desc">Inner errors (empty span when none). Cannot cross async boundaries — call <code>.ToArray()</code> first.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">IEnumerable&lt;Error&gt; AsEnumerable()</div>
+                  <div class="api-member-desc">Returns <code>{ this }</code> for simple/nested; returns inner errors for composite. Use for logging all failures.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── API: Validator<T> ── -->
+        <section class="docs-section" id="api-validator">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">Validator&lt;T&gt;</h2>
+          <p class="section-intro">A delegate type: <code>Result&lt;T&gt; Validator&lt;T&gt;(T t)</code>. Combine with <code>FailFast</code> or <code>HarvestErrors</code> from the F module.</p>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">F module — Validation</span>
+              <span class="api-type-badge badge--static">static</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">Validator&lt;T&gt; FailFast&lt;T&gt;(params Validator&lt;T&gt;[] validators)</div>
+                  <div class="api-member-desc">Runs validators in order. Stops and returns the first failure.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">Validator&lt;T&gt; HarvestErrors&lt;T&gt;(params Validator&lt;T&gt;[] validators)</div>
+                  <div class="api-member-desc">Runs all validators. Accumulates all failures into a composite <code>Error</code>.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── API: F Module ── -->
+        <section class="docs-section" id="api-f">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">F Module</h2>
+          <p class="section-intro">Static functions in <code>Tutan.Functional.F</code>. Bring into scope with <code>using static Tutan.Functional.F;</code>.</p>
+
+          <div class="table-wrap">
+            <table class="docs-table">
+              <thead><tr><th>Signature</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td>Some&lt;T&gt;(T value)</td><td>Wraps a value. Returns <code>None</code> for null / destroyed Unity objects.</td></tr>
+                <tr><td>None</td><td>The absence sentinel. Implicitly converts to any <code>Optional&lt;T&gt;</code>.</td></tr>
+                <tr><td>Success&lt;T&gt;(T value)</td><td>Creates a successful Result. Returns <code>Error("Value is null")</code> for null references.</td></tr>
+                <tr><td>Success()</td><td>Creates a successful <code>Result&lt;Unit&gt;</code> with no value.</td></tr>
+                <tr><td>Error(string)</td><td>Simple error.</td></tr>
+                <tr><td>Error(string, Error)</td><td>Nested error — message + cause.</td></tr>
+                <tr><td>Error(IEnumerable&lt;Error&gt;)</td><td>Composite error.</td></tr>
+                <tr><td>Try&lt;T&gt;(Func&lt;T&gt;)</td><td>Wraps exceptions into <code>Error(ex.ToString())</code>.</td></tr>
+                <tr><td>Try(Action)</td><td>Same, for void actions.</td></tr>
+                <tr><td>TryAsync&lt;T&gt;(Func&lt;UniTask&lt;T&gt;&gt;)</td><td>Async exception wrapping.</td></tr>
+                <tr><td>Pipe&lt;T,R&gt;(T, Func&lt;T,R&gt;)</td><td>Left-to-right function application.</td></tr>
+                <tr><td>Tee(Action) / Tee&lt;T&gt;(Action&lt;T&gt;)</td><td>Lifts side-effect for use in pipelines.</td></tr>
+                <tr><td>Curry / CurryFirst</td><td>Function currying and partial application.</td></tr>
+                <tr><td>Unit()</td><td>Returns the empty value (<code>default(ValueTuple)</code>).</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ── API: Extensions ── -->
+        <section class="docs-section" id="api-extensions">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">Extensions</h2>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">LookupExtensions</span>
+              <span class="api-type-badge badge--static">extensions</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">Optional&lt;T&gt; LookupComponent&lt;T&gt;(this GameObject go) where T : Component</div>
+                  <div class="api-member-desc">Safe <code>TryGetComponent</code>. Returns <code>None</code> when the GameObject is null/destroyed or component is absent.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">Optional&lt;Transform&gt; LookupParent(this Transform t)</div>
+                  <div class="api-member-desc">Safe parent access. Returns <code>None</code> when no parent or destroyed.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">Optional&lt;T&gt; Lookup&lt;K,T&gt;(this IDictionary&lt;K,T&gt; dict, K key)</div>
+                  <div class="api-member-desc">Safe dictionary access. Returns <code>None</code> on missing key.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">EnumerableExt</span>
+              <span class="api-type-badge badge--static">extensions</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">Optional&lt;T&gt; Head&lt;T&gt;(this IEnumerable&lt;T&gt; list)</div>
+                  <div class="api-member-desc">First element as Optional. <code>None</code> on empty or null sequence.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">Optional&lt;T&gt; FindFirst&lt;T&gt;(this IEnumerable&lt;T&gt; source, Func&lt;T,bool&gt; predicate)</div>
+                  <div class="api-member-desc">First matching element as Optional.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">IEnumerable&lt;T&gt; Flatten&lt;T&gt;(this IEnumerable&lt;IEnumerable&lt;T&gt;&gt; list)</div>
+                  <div class="api-member-desc">Flattens one level of nesting.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">Map / Bind / ForEach</div>
+                  <div class="api-member-desc">Aliases for <code>Select</code>, <code>SelectMany</code>, and side-effect iteration.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div><!-- .docs-content -->
+    </main>
+  </div><!-- .docs-shell -->
+
+  <!-- Sidebar toggle (mobile) -->
+  <button class="sidebar-toggle-btn" aria-label="Toggle navigation sidebar">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+
+  <script src="src/main.js"></script>
+  <script src="src/docs.js"></script>
+</body>
+</html>

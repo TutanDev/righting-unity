@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Architecture — API Reference — Unity Framework</title>
+  <meta name="description" content="UP-Architecture API Reference: complete type and member documentation for layer attributes, validation types, and editor tools.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/styles.css">
+  <link rel="stylesheet" href="src/docs.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/favicon/favicon-32x32.png" alt="" class="nav-logo-icon" aria-hidden="true">
+        Unity Framework
+      </a>
+      <div class="nav-links">
+        <a href="architecture.html" class="nav-link" style="color:var(--arch-color)">Architecture</a>
+        <a href="functional.html" class="nav-link">Functional</a>
+        <a href="utilities.html" class="nav-link">Utilities</a>
+      </div>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="docs-shell">
+
+    <!-- Sidebar -->
+    <aside class="docs-sidebar" aria-label="Documentation navigation">
+      <div class="sidebar-header">
+        <a href="index.html" class="sidebar-back">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+          Back to home
+        </a>
+        <span class="sidebar-pkg-id sidebar-pkg-id--arch">com.tutan.architecture</span>
+        <div class="sidebar-pkg-name">Architecture</div>
+      </div>
+      <nav class="sidebar-nav" aria-label="Page sections">
+        <a href="architecture.html" class="sidebar-direct" data-pkg="arch">← Guides</a>
+
+        <div class="sidebar-group open">
+          <button class="sidebar-group-btn" aria-expanded="true">
+            API Reference
+            <svg class="sidebar-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="sidebar-items">
+            <a href="#api-layer-attrs" class="sidebar-link" data-pkg="arch">Layer Attributes</a>
+            <a href="#api-behavioral-attrs" class="sidebar-link" data-pkg="arch">Behavioral Attributes</a>
+            <a href="#api-topology" class="sidebar-link" data-pkg="arch">LayerTopology</a>
+            <a href="#api-registry" class="sidebar-link" data-pkg="arch">ArchitectureRegistry</a>
+            <a href="#api-validation" class="sidebar-link" data-pkg="arch">Validation Types</a>
+            <a href="#api-editor" class="sidebar-link" data-pkg="arch">Editor Tools</a>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main content -->
+    <main class="docs-main">
+
+      <div class="docs-content">
+
+        <!-- ── API: Layer Attributes ── -->
+        <section class="docs-section" id="api-layer-attrs">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">Layer Attributes</h2>
+          <p class="section-intro">All in namespace <code>Tutan.Architecture</code>. Shorthand attributes inherit from <code>LayerAttribute</code>. All are sealed, non-inherited, single-use.</p>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">LayerAttribute</span>
+              <span class="api-type-badge badge--attr">Attribute</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--ctor">ctor</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">LayerAttribute(ArchitectureLayer layer)</div>
+                  <div class="api-member-desc">Assigns the type to the given layer. Verbose form of shorthand attributes.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--prop">prop</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">ArchitectureLayer Layer { get; }</div>
+                  <div class="api-member-desc">The layer this type belongs to.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">Shorthand Attributes</span>
+              <span class="api-type-badge badge--attr">Attribute</span>
+            </div>
+            <div class="table-wrap">
+              <table class="docs-table">
+                <thead><tr><th>Attribute</th><th>Layer</th><th>Targets</th></tr></thead>
+                <tbody>
+                  <tr><td>[Client]</td><td><code>ArchitectureLayer.Client</code></td><td>Class, Interface</td></tr>
+                  <tr><td>[Manager]</td><td><code>ArchitectureLayer.Manager</code></td><td>Class, Interface</td></tr>
+                  <tr><td>[Engine]</td><td><code>ArchitectureLayer.Engine</code></td><td>Class, Interface</td></tr>
+                  <tr><td>[ResourceAccess]</td><td><code>ArchitectureLayer.ResourceAccess</code></td><td>Class, Interface</td></tr>
+                  <tr><td>[Resource]</td><td><code>ArchitectureLayer.Resource</code></td><td>Class, Interface</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">UtilityAttribute</span>
+              <span class="api-type-badge badge--attr">Attribute</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--ctor">ctor</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">UtilityAttribute()</div>
+                  <div class="api-member-desc">Marks a type as cross-cutting. Edges targeting this type are ignored by topology validation. Not a layer — a type cannot be both Utility and a layer member.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">AssemblyLayerAttribute</span>
+              <span class="api-type-badge badge--attr">Attribute</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--ctor">ctor</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">AssemblyLayerAttribute(ArchitectureLayer layer)</div>
+                  <div class="api-member-desc">Tags the assembly. All types inherit this layer unless they have a type-level attribute. Target: <code>Assembly</code>.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">ArchitectureLayer</span>
+              <span class="api-type-badge badge--enum">Enum</span>
+            </div>
+            <div class="table-wrap">
+              <table class="docs-table">
+                <thead><tr><th>Value</th><th>Ordinal</th></tr></thead>
+                <tbody>
+                  <tr><td>Client</td><td>0</td></tr>
+                  <tr><td>Manager</td><td>1</td></tr>
+                  <tr><td>Engine</td><td>2</td></tr>
+                  <tr><td>ResourceAccess</td><td>3</td></tr>
+                  <tr><td>Resource</td><td>4</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── API: Behavioral Attributes ── -->
+        <section class="docs-section" id="api-behavioral-attrs">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">Behavioral Attributes</h2>
+          <p class="section-intro">Declare message flow and use case entry points. All validated by the MSGBUS and USECASE rule sets.</p>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">PublishesAttribute</span>
+              <span class="api-type-badge badge--attr">Attribute</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--ctor">ctor</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">PublishesAttribute(Type messageType)</div>
+                  <div class="api-member-desc">Declares that this class publishes the given message type. <code>AllowMultiple = true</code>. Only Manager types should use this — other layers trigger a MSGBUS violation.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--prop">prop</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">Type MessageType { get; }</div>
+                  <div class="api-member-desc">The message type being published.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">SubscribesToAttribute</span>
+              <span class="api-type-badge badge--attr">Attribute</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--ctor">ctor</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">SubscribesToAttribute(Type messageType)</div>
+                  <div class="api-member-desc">Declares that this class subscribes to the given message type. <code>AllowMultiple = true</code>. Engines, ResourceAccess, and Resources must not subscribe.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">UseCaseAttribute</span>
+              <span class="api-type-badge badge--attr">Attribute</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--ctor">ctor</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">UseCaseAttribute(string name)</div>
+                  <div class="api-member-desc">Marks a Manager method as a use case entry point with the given name. Target: <code>Method</code>. The validator traces the call chain from this method and validates USECASE001–003.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--prop">prop</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">string Name { get; }</div>
+                  <div class="api-member-desc">The use case name. Multiple Managers can share the same name — both appear as entry points in the Validation window.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── API: LayerTopology ── -->
+        <section class="docs-section" id="api-topology">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">LayerTopology</h2>
+          <p class="section-intro">Static query API for the allowed dependency directions. Use in custom rules or tooling.</p>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">LayerTopology</span>
+              <span class="api-type-badge badge--static">static class</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">bool IsAllowed(ArchitectureLayer source, ArchitectureLayer target)</div>
+                  <div class="api-member-desc">Returns <code>true</code> if a dependency from <code>source</code> to <code>target</code> is permitted by the closed architecture.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">IReadOnlyCollection&lt;ArchitectureLayer&gt; GetAllowedTargets(ArchitectureLayer source)</div>
+                  <div class="api-member-desc">Returns the set of layers the given source layer may depend on.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── API: ArchitectureRegistry ── -->
+        <section class="docs-section" id="api-registry">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">ArchitectureRegistry</h2>
+          <p class="section-intro">Editor-only. Scans loaded assemblies and builds the dependency graph. Read by all validation rules.</p>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">ArchitectureRegistry</span>
+              <span class="api-type-badge badge--class">class</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">void Scan()</div>
+                  <div class="api-member-desc">Scans all loaded assemblies for layer attributes and builds the dependency graph. Call before validating.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--prop">prop</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">IReadOnlyDictionary&lt;Type, TypeLayerInfo&gt; TypeMap { get; }</div>
+                  <div class="api-member-desc">All tracked types and their resolved layer info.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--prop">prop</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">IReadOnlyList&lt;DependencyEdge&gt; Edges { get; }</div>
+                  <div class="api-member-desc">All dependency edges between tracked types. Each edge records source, target, and how the dependency was detected (<code>DependencyKind</code>).</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--prop">prop</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">IReadOnlyDictionary&lt;Type, MessageTypeInfo&gt; MessageTypes { get; }</div>
+                  <div class="api-member-desc">Message types found via <code>[Publishes]</code> / <code>[SubscribesTo]</code> declarations.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--prop">prop</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">IReadOnlyDictionary&lt;string, IReadOnlyList&lt;UseCaseEntryPoint&gt;&gt; UseCases { get; }</div>
+                  <div class="api-member-desc">Use case entry points grouped by name.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── API: Validation Types ── -->
+        <section class="docs-section" id="api-validation">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">Validation Types</h2>
+          <p class="section-intro">Editor-only types for running and interpreting validation results.</p>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">LayerValidator</span>
+              <span class="api-type-badge badge--class">class</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--ctor">ctor</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">LayerValidator()</div>
+                  <div class="api-member-desc">Creates a validator with all 7 default rule sets.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--ctor">ctor</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">LayerValidator(IEnumerable&lt;IArchitectureRule&gt; rules)</div>
+                  <div class="api-member-desc">Creates a validator with a custom rule set. Mix built-in and custom rules in any order. Used for CI scripts and custom tooling.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">List&lt;ValidationResult&gt; ScanAndValidate()</div>
+                  <div class="api-member-desc">Convenience method — scans assemblies and validates in one call.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">List&lt;ValidationResult&gt; Validate(ArchitectureRegistry registry)</div>
+                  <div class="api-member-desc">Runs all rules against a pre-scanned registry.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">ValidationResult</span>
+              <span class="api-type-badge badge--struct">struct</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--prop">prop</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">string RuleId { get; }</div>
+                  <div class="api-member-desc">Which rule produced this result (e.g., <code>ARCH001</code>, <code>NAME002</code>).</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--prop">prop</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">ValidationSeverity Severity { get; }</div>
+                  <div class="api-member-desc"><code>Info</code>, <code>Warning</code>, or <code>Error</code>. Actual severity is modified by the active <code>EnforcementMode</code>.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--prop">prop</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">string Message { get; }</div>
+                  <div class="api-member-desc">Human-readable violation description.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">FrameworkSettings</span>
+              <span class="api-type-badge badge--class">ScriptableObject</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--prop">prop</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">EnforcementMode EnforcementMode { get; set; }</div>
+                  <div class="api-member-desc"><code>Off</code> | <code>WarningsOnly</code> | <code>ErrorsForCore</code> | <code>Strict</code></div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--prop">prop</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">string[] UtilityAssemblies { get; set; }</div>
+                  <div class="api-member-desc">Assembly names treated as cross-cutting utility. All types in these assemblies are exempt from topology validation.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">static FrameworkSettings GetOrDefault()</div>
+                  <div class="api-member-desc">Loads from <code>Resources/Framework/FrameworkSettings</code> or returns a default instance.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── API: Editor Tools ── -->
+        <section class="docs-section" id="api-editor">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">Editor Tools</h2>
+          <p class="section-intro">Two editor windows for exploring and validating your architecture. Both accessible from the <strong>Window → Architecture</strong> menu.</p>
+
+          <div class="table-wrap">
+            <table class="docs-table">
+              <thead><tr><th>Window</th><th>Menu Path</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td>ArchitectureSettingsProvider</td><td>Edit → Project Settings → Architecture</td><td>Unified panel — configure enforcement mode and utility assemblies, then run validation inline. Violations list with severity filter, search, and a detail pane showing the rule's <em>Why</em> and a <em>Fix suggestion</em>. Settings asset is auto-created on first visit.</td></tr>
+                <tr><td>DependencyGraphWindow</td><td>Window → Architecture → Dependency Graph</td><td>Interactive layer-banded graph. Nodes grouped by layer, edges colored by validity. Filter by layer and kind. Toggle <em>Violations Only</em>. Single-click to ping in Project; double-click to open script.</td></tr>
+                <tr><td>ValidationWindow</td><td>Window → Architecture → Validation</td><td>Tabbed window — <em>Violations</em> list with rule IDs and source types; <em>Use Cases</em> tab with BFS chains and USECASE results.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="callout callout--note">
+            <strong>CompilationHook</strong>
+            Validation runs automatically after every successful compilation when <code>EnforcementMode</code> is not <code>Off</code>. Results appear directly in the Unity Console with clickable links to the violating type.
+          </div>
+        </section>
+
+      </div><!-- .docs-content -->
+    </main>
+  </div><!-- .docs-shell -->
+
+  <!-- Sidebar toggle (mobile) -->
+  <button class="sidebar-toggle-btn" aria-label="Toggle navigation sidebar">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+
+  <script src="src/main.js"></script>
+  <script src="src/docs.js"></script>
+</body>
+</html>

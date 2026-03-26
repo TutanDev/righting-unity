@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Utilities — API Reference — Unity Framework</title>
+  <meta name="description" content="UP-Utilities API Reference: complete type and member documentation for MessageBus, Timer, AudioPlayer, Persistence, and Reporter.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/styles.css">
+  <link rel="stylesheet" href="src/docs.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/favicon/favicon-32x32.png" alt="" class="nav-logo-icon" aria-hidden="true">
+        Unity Framework
+      </a>
+      <div class="nav-links">
+        <a href="architecture.html" class="nav-link">Architecture</a>
+        <a href="functional.html" class="nav-link">Functional</a>
+        <a href="utilities.html" class="nav-link" style="color:var(--util-color)">Utilities</a>
+      </div>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="docs-shell">
+
+    <!-- Sidebar -->
+    <aside class="docs-sidebar" aria-label="Documentation navigation">
+      <div class="sidebar-header">
+        <a href="index.html" class="sidebar-back">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+          Back to home
+        </a>
+        <span class="sidebar-pkg-id sidebar-pkg-id--util">com.tutan.utilities</span>
+        <div class="sidebar-pkg-name">Utilities</div>
+      </div>
+      <nav class="sidebar-nav" aria-label="Page sections">
+        <a href="utilities.html" class="sidebar-direct" data-pkg="util">← Guides</a>
+
+        <div class="sidebar-group open">
+          <button class="sidebar-group-btn" aria-expanded="true">
+            API Reference
+            <svg class="sidebar-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="sidebar-items">
+            <a href="#api-messagebus" class="sidebar-link" data-pkg="util">MessageBus</a>
+            <a href="#api-timer" class="sidebar-link" data-pkg="util">Timer</a>
+            <a href="#api-audioplayer" class="sidebar-link" data-pkg="util">AudioPlayer</a>
+            <a href="#api-persistence" class="sidebar-link" data-pkg="util">Persistence</a>
+            <a href="#api-reporter" class="sidebar-link" data-pkg="util">Reporter</a>
+            <a href="#api-extensibility" class="sidebar-link" data-pkg="util">Extensibility</a>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main content -->
+    <main class="docs-main">
+
+      <div class="docs-content">
+
+        <!-- ── API: MessageBus ── -->
+        <section class="docs-section" id="api-messagebus">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">MessageBus API</h2>
+          <p class="section-intro">Namespace: <code>Utilities.Messaging</code>. Access via <code>MessageBus.Instance</code>.</p>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">MessageBus</span>
+              <span class="api-type-badge badge--class">class</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">SubscriptionToken Subscribe&lt;T&gt;(MessageHandler&lt;T&gt; handler) where T : unmanaged, IMessage</div>
+                  <div class="api-member-desc">Registers a handler. Returns an integer token for unsubscription.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">bool Unsubscribe(SubscriptionToken token)</div>
+                  <div class="api-member-desc">Removes the handler associated with the token. Returns <code>false</code> if already removed.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">void Publish&lt;T&gt;(ref T message) where T : unmanaged, IMessage</div>
+                  <div class="api-member-desc">Dispatches immediately to all subscribers on the calling thread.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">void Enqueue&lt;T&gt;(in T message) where T : unmanaged, IMessage</div>
+                  <div class="api-member-desc">Thread-safe enqueue. Process with <code>DrainQueues()</code> on the main thread.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">void DrainQueues()</div>
+                  <div class="api-member-desc">Processes all enqueued messages. Call once per frame on the main thread.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--prop">prop</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">int ChannelCount { get; }</div>
+                  <div class="api-member-desc">Number of distinct message types with at least one active subscriber.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">int GetSubscriberCount&lt;T&gt;()</div>
+                  <div class="api-member-desc">Number of active subscribers for message type <code>T</code>.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">void Reset() / void Dispose()</div>
+                  <div class="api-member-desc">Clears all subscriptions and channels.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">MessageHandler&lt;T&gt;</span>
+              <span class="api-type-badge badge--delegate">delegate</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--field">sig</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">void MessageHandler&lt;T&gt;(ref T message) where T : unmanaged, IMessage</div>
+                  <div class="api-member-desc">Handler delegate. Receives the message by <code>ref</code> — no struct copy on dispatch.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── API: Timer ── -->
+        <section class="docs-section" id="api-timer">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">Timer API</h2>
+          <p class="section-intro">Namespace: <code>Utilities.Timing</code>. Access via <code>Timer.Instance</code>.</p>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">Timer</span>
+              <span class="api-type-badge badge--class">class</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">TimerHandle Schedule(float delay, Action callback)</div>
+                  <div class="api-member-desc">Fires <code>callback</code> once after <code>delay</code> seconds (scaled time).</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">TimerHandle Schedule(TimerParams @params, Action callback)</div>
+                  <div class="api-member-desc">Fires with full control over delay, repeat, and timescale.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">TimerHandle ScheduleRepeating(float interval, Action callback)</div>
+                  <div class="api-member-desc">Fires every <code>interval</code> seconds until cancelled.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">bool Cancel(TimerHandle handle)</div>
+                  <div class="api-member-desc">Cancels a scheduled timer. Returns <code>false</code> if already fired or cancelled (generation check — safe to call twice).</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">TimerParams</span>
+              <span class="api-type-badge badge--struct">readonly struct</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--field">static</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">static TimerParams Default</div>
+                  <div class="api-member-desc">1.0s delay, one-shot, scaled time.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">static TimerParams Repeat(float interval)</div>
+                  <div class="api-member-desc">Repeating with given interval, no initial delay.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">TimerParams WithDelay(float seconds)</div>
+                  <div class="api-member-desc">Set delay before first fire.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">TimerParams WithUnscaledTime(bool unscaled)</div>
+                  <div class="api-member-desc">Use <code>Time.unscaledTime</code> when <code>true</code>.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── API: AudioPlayer ── -->
+        <section class="docs-section" id="api-audioplayer">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">AudioPlayer API</h2>
+          <p class="section-intro">Namespace: <code>Utilities.Audio</code>. Access via <code>AudioPlayer.Instance</code>.</p>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">AudioPlayer</span>
+              <span class="api-type-badge badge--class">class</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">SoundHandle Play(AudioClip clip)</div>
+                  <div class="api-member-desc">Plays with default params (2D, volume 1, pitch 1).</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">SoundHandle Play(AudioClip clip, SoundParams @params)</div>
+                  <div class="api-member-desc">Plays with full control via <code>SoundParams</code>.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">bool Stop(SoundHandle handle)</div>
+                  <div class="api-member-desc">Stops playback and returns the source to the pool.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">bool Pause(SoundHandle handle) / bool Resume(SoundHandle handle)</div>
+                  <div class="api-member-desc">Pause or resume playback without releasing the pool slot.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">bool IsPlaying(SoundHandle handle)</div>
+                  <div class="api-member-desc">Returns <code>true</code> if the sound is still active.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">SoundParams</span>
+              <span class="api-type-badge badge--struct">readonly struct</span>
+            </div>
+            <div class="table-wrap">
+              <table class="docs-table">
+                <thead><tr><th>Method / Property</th><th>Description</th></tr></thead>
+                <tbody>
+                  <tr><td>SoundParams.Default</td><td>Volume 1, pitch 1, no loop, 2D, no position</td></tr>
+                  <tr><td>.WithVolume(float)</td><td>0–1</td></tr>
+                  <tr><td>.WithPitch(float)</td><td>Playback speed multiplier</td></tr>
+                  <tr><td>.WithLoop(bool)</td><td>Loop until stopped</td></tr>
+                  <tr><td>.WithSpatialBlend(float)</td><td>0 = 2D, 1 = 3D</td></tr>
+                  <tr><td>.WithPosition(Vector3)</td><td>World position for 3D audio</td></tr>
+                  <tr><td>.WithMixerGroup(AudioMixerGroup)</td><td>Route to mixer group</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── API: Persistence ── -->
+        <section class="docs-section" id="api-persistence">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">Persistence API</h2>
+          <p class="section-intro">Namespace: <code>Utilities.Persistence</code>. Access via <code>PersistenceService.Instance</code>.</p>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">PersistenceService</span>
+              <span class="api-type-badge badge--class">class</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">void Save&lt;T&gt;(string key, T data)</div>
+                  <div class="api-member-desc">Serializes and stores data under the given key. <code>T</code> must be <code>[Serializable]</code>.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">bool TryLoad&lt;T&gt;(string key, out T data)</div>
+                  <div class="api-member-desc">Loads and deserializes. Returns <code>false</code> if key does not exist.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">bool Exists(string key)</div>
+                  <div class="api-member-desc">Returns <code>true</code> if a saved value exists for the key.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">bool Delete(string key)</div>
+                  <div class="api-member-desc">Removes stored data for the key.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">void Flush()</div>
+                  <div class="api-member-desc">Commits pending writes. Required when using the PlayerPrefs backend.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── API: Reporter ── -->
+        <section class="docs-section" id="api-reporter">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">Reporter API</h2>
+          <p class="section-intro">Namespace: <code>Utilities.Diagnostics</code>. Static class — no singleton. Available to all layers.</p>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">Reporter</span>
+              <span class="api-type-badge badge--static">static class</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--field">static</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">static ReportLevel Level { get; set; }</div>
+                  <div class="api-member-desc">Runtime filter. Messages below this level are suppressed. Default: <code>Trace</code> in Editor, <code>Info</code> in builds.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--field">static</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">static bool Enabled { get; set; }</div>
+                  <div class="api-member-desc">Global on/off switch. When <code>false</code>, all output and metric accumulation is suppressed.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--field">static</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">static bool LogTimings { get; set; }</div>
+                  <div class="api-member-desc">When <code>true</code>, timing scopes emit a <code>Trace</code>-level log on the main thread. Default: <code>true</code> in Editor, <code>false</code> in builds.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">static void Trace(string msg, string tag) <span style="opacity:.5;font-size:.85em">[Conditional("REPORTER_TRACE")]</span></div>
+                  <div class="api-member-desc">High-frequency diagnostic. Zero IL in Release unless <code>REPORTER_TRACE</code> is defined.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">static void Dbg(string msg, string tag) <span style="opacity:.5;font-size:.85em">[Conditional("REPORTER_DEBUG")]</span></div>
+                  <div class="api-member-desc">Debug-level. Zero IL in Release unless <code>REPORTER_DEBUG</code> is defined.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">static void Info / Warn / Error(string msg, string tag)</div>
+                  <div class="api-member-desc">Always compiled. Filtered at runtime by <code>Reporter.Level</code>.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">static void Exception(Exception ex, string context, string tag)</div>
+                  <div class="api-member-desc">Logs with full stack trace preservation.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">static IDisposable Scope(string name, string tag)</div>
+                  <div class="api-member-desc">Returns a scoped timing token. Wrap in a <code>using</code> statement — timing is recorded on disposal.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">static void TagFilter / AddTagFilter(string tag) / ClearTagFilters()</div>
+                  <div class="api-member-desc">Filter output to specific subsystem tags. <code>null</code> tag filter shows all.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">ReportLevel</span>
+              <span class="api-type-badge badge--enum">Enum</span>
+            </div>
+            <div class="table-wrap">
+              <table class="docs-table">
+                <thead><tr><th>Value</th><th>Description</th></tr></thead>
+                <tbody>
+                  <tr><td>Trace</td><td>Highest verbosity. Requires <code>REPORTER_TRACE</code> define to compile.</td></tr>
+                  <tr><td>Debug</td><td>Requires <code>REPORTER_DEBUG</code> define to compile.</td></tr>
+                  <tr><td>Info</td><td>Always compiled. General lifecycle events.</td></tr>
+                  <tr><td>Warning</td><td>Always compiled. Potential issues.</td></tr>
+                  <tr><td>Error</td><td>Always compiled. Actionable failures.</td></tr>
+                  <tr><td>Off</td><td>Silences all output.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── API: Extensibility ── -->
+        <section class="docs-section" id="api-extensibility">
+          <div class="section-eyebrow">API Reference</div>
+          <h2 class="section-title">Extensibility API</h2>
+          <p class="section-intro">Namespace: <code>Utilities</code>. Types needed to register a custom utility.</p>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">[Utility]</span>
+              <span class="api-type-badge badge--class">attribute</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--field">param</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">string name <span style="opacity:.5;font-size:.85em">required</span></div>
+                  <div class="api-member-desc">Display name shown as the header in Project Settings → Utilities.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--field">param</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">string description <span style="opacity:.5;font-size:.85em">optional</span></div>
+                  <div class="api-member-desc">Shown in grey below the header in the panel.</div>
+                </div>
+              </div>
+              <div class="api-member">
+                <span class="api-kind kind--field">param</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">Type configType <span style="opacity:.5;font-size:.85em">optional</span></div>
+                  <div class="api-member-desc">Must derive from <code>UtilityConfig</code>. When set, the editor auto-creates and links a config sub-asset. Its fields appear inline in the panel.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">IUtilityInstaller</span>
+              <span class="api-type-badge badge--class">interface</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--method">method</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">void Install(UtilityConfig config, Transform hostRoot)</div>
+                  <div class="api-member-desc">Called synchronously during <code>BeforeSceneLoad</code>. <code>config</code> is the linked sub-asset or <code>null</code> — always null-guard. Parent host GameObjects to <code>hostRoot</code>; do not call <code>DontDestroyOnLoad</code> on them individually. Installers must have a public parameterless constructor.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="api-group">
+            <div class="api-group-header">
+              <span class="api-group-name">UtilityConfig</span>
+              <span class="api-type-badge badge--class">abstract class</span>
+            </div>
+            <div class="api-members">
+              <div class="api-member">
+                <span class="api-kind kind--field">base</span>
+                <div class="api-member-content">
+                  <div class="api-member-name">ScriptableObject</div>
+                  <div class="api-member-desc">Subclass this to define per-utility settings. Add <code>[SerializeField]</code> fields — they appear inline in the Project Settings panel. Cast <code>config</code> to your subtype inside <code>Install</code>.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div><!-- .docs-content -->
+    </main>
+  </div><!-- .docs-shell -->
+
+  <!-- Sidebar toggle (mobile) -->
+  <button class="sidebar-toggle-btn" aria-label="Toggle navigation sidebar">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+
+  <script src="src/main.js"></script>
+  <script src="src/docs.js"></script>
+</body>
+</html>
