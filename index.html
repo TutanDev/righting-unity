@@ -28,6 +28,7 @@
         <a href="#architecture" class="nav-link">Architecture</a>
         <a href="#functional" class="nav-link">Functional</a>
         <a href="#utilities" class="nav-link">Utilities</a>
+        <a href="#framework" class="nav-link">Framework</a>
       </div>
       <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -45,8 +46,8 @@
         <span class="hero-title-accent">The Right Way</span>
       </h1>
       <p class="hero-subtitle">
-        Three packages implementing volatility-based architecture for professional Unity development.
-        Structure, safety, and services — all in one framework.
+        Four packages implementing volatility-based architecture for professional Unity development.
+        Structure, safety, services, and a meta-package that glues them together.
       </p>
       <div class="hero-actions">
         <a href="#architecture" class="btn btn--primary">Explore Packages</a>
@@ -63,6 +64,10 @@
         <a href="#utilities" class="hero-package hero-package--util">
           <span class="hero-package-dot" aria-hidden="true"></span>
           Utilities
+        </a>
+        <a href="#framework" class="hero-package hero-package--framework">
+          <span class="hero-package-dot" aria-hidden="true"></span>
+          Framework
         </a>
       </div>
     </div>
@@ -323,6 +328,101 @@ result
       </div>
       <div style="text-align:center;margin-top:48px">
         <a href="utilities.html" class="btn btn--cta btn--cta--util">Explore</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Framework Meta-Package -->
+  <section class="package package--alt" id="framework">
+    <div class="container">
+      <div class="package-header">
+        <span class="package-label package-label--framework">com.tutan.framework</span>
+        <h2 class="package-title">Framework</h2>
+        <p class="package-desc">
+          The glue that ties everything together. Install one package, get Architecture, Functional, and Utilities — bootstrapped in the right order with a lightweight DI container.
+        </p>
+      </div>
+
+      <div class="feature-list" style="max-width:720px;margin:0 auto">
+        <div class="feature">
+          <div class="feature-icon feature-icon--func" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <div>
+            <h3 class="feature-name">FrameworkBootstrap</h3>
+            <p class="feature-desc">A single <code>[RuntimeInitializeOnLoadMethod]</code> entry point initializes Utilities first (synchronous), then installs architecture layers via the container (async) — all before the first scene loads.</p>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon feature-icon--func" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          </div>
+          <div>
+            <h3 class="feature-name">FrameworkContainer</h3>
+            <p class="feature-desc">Lightweight DI container. Register layers with <code>AddManager&lt;T&gt;()</code>, <code>AddEngine&lt;T&gt;()</code>, etc. The container resolves constructor dependencies automatically and installs layers bottom-up (Resource → Client).</p>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon feature-icon--func" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div>
+            <h3 class="feature-name">Lifecycle Management</h3>
+            <p class="feature-desc">Each layer type implements <code>InstallAsync()</code> and <code>Remove()</code> via its layer interface (<code>IManager</code>, <code>IEngine</code>, etc.). The container calls them in the correct order and tears down in reverse.</p>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon feature-icon--func" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <h3 class="feature-name">Startup Await</h3>
+            <p class="feature-desc">Call <code>await FrameworkBootstrap.WaitForInstallAsync()</code> in your first MonoBehaviour to confirm all layers are ready before resolving dependencies.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-card code-card--func" style="max-width:720px;margin:36px auto 0">
+        <div class="code-card-header">
+          <span class="code-card-dot" aria-hidden="true"></span>
+          <span class="code-card-dot" aria-hidden="true"></span>
+          <span class="code-card-dot" aria-hidden="true"></span>
+          <span class="code-card-file">GameInstaller.cs</span>
+        </div>
+<pre class="code-block"><code><span class="kw">using</span> Tutan.Framework;
+<span class="kw">using</span> UnityEngine;
+
+<span class="cmt">// Step 1: Register layers at SubsystemRegistration (before FrameworkBootstrap fires)</span>
+<span class="kw">public static class</span> <span class="type">GameInstaller</span>
+{
+    [<span class="type">RuntimeInitializeOnLoadMethod</span>(<span class="type">RuntimeInitializeLoadType</span>.SubsystemRegistration)]
+    <span class="kw">static void</span> Register()
+    {
+        FrameworkBootstrap.Container
+            .AddResource&lt;<span class="type">ItemDefinitions</span>&gt;()
+            .AddResourceAccess&lt;<span class="type">IInventoryAccess</span>, <span class="type">InventoryAccess</span>&gt;()
+            .AddEngine&lt;<span class="type">SortingEngine</span>&gt;()
+            .AddManager&lt;<span class="type">InventoryManager</span>&gt;()
+            .AddClient&lt;<span class="type">HudClient</span>&gt;();
+    }
+}
+
+<span class="cmt">// Step 2: Await installation in your startup MonoBehaviour</span>
+<span class="kw">public class</span> <span class="type">GameStartup</span> : <span class="type">MonoBehaviour</span>
+{
+    <span class="kw">async void</span> Start()
+    {
+        <span class="kw">var</span> result = <span class="kw">await</span> FrameworkBootstrap.WaitForInstallAsync();
+        result.Match(
+            onError: err => Debug.LogError(err.Message),
+            onSuccess: _ =>
+            {
+                <span class="kw">var</span> manager = FrameworkBootstrap.Container.Resolve&lt;<span class="type">InventoryManager</span>&gt;();
+                <span class="cmt">// All layers are installed and ready</span>
+            }
+        );
+    }
+}</code></pre>
       </div>
     </div>
   </section>

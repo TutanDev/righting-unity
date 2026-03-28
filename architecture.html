@@ -71,7 +71,7 @@
       <!-- ── Getting Started Hero ── -->
       <section class="docs-hero" id="getting-started">
         <div class="docs-hero-glow" style="background:radial-gradient(ellipse, var(--arch-glow) 0%, transparent 70%)" aria-hidden="true"></div>
-        <span class="docs-hero-badge docs-hero-badge--arch">com.tutan.architecture · v0.4.0</span>
+        <span class="docs-hero-badge docs-hero-badge--arch">com.tutan.architecture · v2.0.0</span>
         <h1 class="docs-hero-title">Enforce Architecture<br>at Compile Time</h1>
         <p class="docs-hero-desc">
           UP-Architecture implements Löwy's Method in Unity. Tag your types, and the validator enforces a strict 5-layer topology — no upward calls, no skipped layers, no sideways dependencies.
@@ -89,36 +89,39 @@
             <span class="docs-stat-value" style="color:var(--arch-color)">24+</span>
             <span class="docs-stat-label">Validations</span>
           </div>
-          <div>
-            <span class="docs-stat-value" style="color:var(--arch-color)">Unity 6</span>
-            <span class="docs-stat-label">Target</span>
-          </div>
         </div>
 
         <div class="steps">
           <div class="step">
             <div class="step-num" style="border-color:var(--arch-color);color:var(--arch-color)">1</div>
             <div class="step-body">
-              <div class="step-title">Install the package</div>
-              <div class="step-desc">Open <strong>Window → Package Manager</strong>, click <strong>+</strong> → <em>Add package from disk…</em>, navigate to <code>Packages/com.tutan.architecture/package.json</code>.</div>
+              <div class="step-title">Install via Framework</div>
+              <div class="step-desc">Install <code>com.tutan.framework</code> — it pulls in Architecture, Functional, and Utilities automatically. <code>FrameworkBootstrap</code> handles initialization order for you.</div>
             </div>
           </div>
           <div class="step">
             <div class="step-num" style="border-color:var(--arch-color);color:var(--arch-color)">2</div>
             <div class="step-body">
               <div class="step-title">Tag your first type</div>
-              <div class="step-desc">Add <code>[Manager]</code>, <code>[Engine]</code>, or any layer attribute to a class. Use shorthand attributes for readability.</div>
+              <div class="step-desc">Add a <strong>layer attribute</strong> (<code>[Manager]</code>, <code>[Engine]</code>, etc.) and implement the matching <strong>layer interface</strong> (<code>IManager</code>, <code>IEngine</code>, etc.). The interface provides <code>InstallAsync()</code> and <code>Remove()</code> lifecycle methods.</div>
             </div>
           </div>
           <div class="step">
             <div class="step-num" style="border-color:var(--arch-color);color:var(--arch-color)">3</div>
+            <div class="step-body">
+              <div class="step-title">Register in the container</div>
+              <div class="step-desc">In a <code>[RuntimeInitializeOnLoadMethod(SubsystemRegistration)]</code> method, register your types on <code>FrameworkBootstrap.Container</code> using <code>AddManager&lt;T&gt;()</code>, <code>AddEngine&lt;T&gt;()</code>, etc. The container resolves constructor dependencies and calls <code>InstallAsync()</code> in layer order.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" style="border-color:var(--arch-color);color:var(--arch-color)">4</div>
             <div class="step-body">
               <div class="step-title">Run validation</div>
               <div class="step-desc">Open <strong>Window → Architecture → Validate Now</strong>. Violations appear in the console with rule IDs like <code>ARCH001</code>.</div>
             </div>
           </div>
           <div class="step">
-            <div class="step-num" style="border-color:var(--arch-color);color:var(--arch-color)">4</div>
+            <div class="step-num" style="border-color:var(--arch-color);color:var(--arch-color)">5</div>
             <div class="step-body">
               <div class="step-title">Configure enforcement</div>
               <div class="step-desc">Open <strong>Edit → Project Settings → Architecture</strong>. The settings asset is created automatically on first visit. Set enforcement mode (WarningsOnly → Strict), add utility assembly names, and run validation inline from the same panel.</div>
@@ -156,9 +159,17 @@
             <div class="code-card code-card--arch">
               <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">LobbyClient.cs</span></div>
 <pre class="code-block"><code><span class="attr">[Client]</span>
-<span class="kw">public class</span> <span class="type">LobbyClient</span>
+<span class="kw">public class</span> <span class="type">LobbyClient</span> : <span class="type">IClient</span>
 {
     <span class="kw">private readonly</span> <span class="type">SessionManager</span> _sessionManager;
+
+    <span class="kw">public</span> LobbyClient(<span class="type">SessionManager</span> sessionManager)
+        => _sessionManager = sessionManager;
+
+    <span class="kw">public</span> ValueTask&lt;<span class="type">InstallResult</span>&gt; InstallAsync()
+        => <span class="kw">new</span>(<span class="type">InstallResult</span>.Success());
+
+    <span class="kw">public void</span> Remove() { }
 
     <span class="kw">public void</span> OnJoinPressed(<span class="kw">string</span> roomCode)
         => _sessionManager.JoinSession(roomCode);
@@ -168,14 +179,25 @@
 
           <div class="sub-section">
             <h3 class="sub-title">Manager</h3>
-            <p class="prose">Orchestrates business logic by coordinating Engines and ResourceAccess. Managers are the <strong>only</strong> layer that may publish events to the MessageBus. They implement use cases — one method per use case entry point.</p>
+            <p class="prose">Orchestrates business logic by coordinating Engines and ResourceAccess. Managers are the <strong>only</strong> layer that may publish events to the MessageBus. They implement use cases — one method per use case entry point. Constructor dependencies are injected by <code>FrameworkContainer</code>.</p>
             <div class="code-card code-card--arch">
               <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">SessionManager.cs</span></div>
 <pre class="code-block"><code><span class="attr">[Manager]</span>
-<span class="kw">public class</span> <span class="type">SessionManager</span>
+<span class="kw">public class</span> <span class="type">SessionManager</span> : <span class="type">IManager</span>
 {
     <span class="kw">private readonly</span> <span class="type">ValidatingEngine</span> _validator;
     <span class="kw">private readonly</span> <span class="type">SessionAccess</span> _sessionAccess;
+
+    <span class="kw">public</span> SessionManager(<span class="type">ValidatingEngine</span> validator, <span class="type">SessionAccess</span> access)
+    {
+        _validator = validator;
+        _sessionAccess = access;
+    }
+
+    <span class="kw">public</span> ValueTask&lt;<span class="type">InstallResult</span>&gt; InstallAsync()
+        => <span class="kw">new</span>(<span class="type">InstallResult</span>.Success());
+
+    <span class="kw">public void</span> Remove() { }
 
     <span class="kw">public void</span> JoinSession(<span class="kw">string</span> roomCode)
     {
@@ -216,21 +238,43 @@
           <div class="section-eyebrow">Guides</div>
           <h2 class="section-title">Tagging Your Code</h2>
           <p class="section-intro">
-            Every tracked type needs exactly one layer attribute. You can tag individual types with shorthand attributes, tag entire assemblies with <code>[assembly: AssemblyLayer]</code>, or mark infrastructure as <code>[Utility]</code>.
+            Every tracked type needs a <strong>layer attribute</strong> (identifies the layer) and a <strong>layer interface</strong> (provides <code>InstallAsync()</code>/<code>Remove()</code> lifecycle methods). You can also tag entire assemblies with <code>[assembly: AssemblyLayer]</code>, or mark infrastructure as <code>[Utility]</code>.
           </p>
 
           <div class="sub-section">
-            <h3 class="sub-title">Shorthand attributes</h3>
-            <p class="prose">The five shorthand attributes are the preferred way to tag individual types. Each is sealed, non-inherited, and allows only one per type.</p>
+            <h3 class="sub-title">Attribute + interface</h3>
+            <p class="prose">Each layer has a shorthand attribute and a matching interface. The attribute is sealed, non-inherited, and allows only one per type. The interface provides lifecycle hooks that <code>FrameworkContainer</code> calls during bootstrap.</p>
             <div class="code-card code-card--arch">
-              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">InventoryTypes.cs</span></div>
-<pre class="code-block"><code><span class="kw">using</span> Tutan.Architecture;
+              <div class="code-card-header"><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-dot"></span><span class="code-card-file">SessionManager.cs</span></div>
+<pre class="code-block"><code><span class="kw">using</span> System.Threading.Tasks;
+<span class="kw">using</span> Tutan.Architecture;
 
-<span class="attr">[Client]</span>     <span class="kw">public class</span> <span class="type">HudClient</span>        { }
-<span class="attr">[Manager]</span>   <span class="kw">public class</span> <span class="type">InventoryManager</span> { }
-<span class="attr">[Engine]</span>    <span class="kw">public class</span> <span class="type">SortingEngine</span>    { }
-<span class="attr">[ResourceAccess]</span> <span class="kw">public class</span> <span class="type">InventoryAccess</span> { }
-<span class="attr">[Resource]</span>  <span class="kw">public class</span> <span class="type">ItemDefinition</span>  { }</code></pre>
+<span class="attr">[Manager]</span>
+<span class="kw">public class</span> <span class="type">SessionManager</span> : <span class="type">IManager</span>
+{
+    <span class="kw">public async</span> ValueTask&lt;<span class="type">InstallResult</span>&gt; InstallAsync()
+    {
+        <span class="cmt">// Initialize this component</span>
+        <span class="kw">return</span> <span class="type">InstallResult</span>.Success();
+    }
+
+    <span class="kw">public void</span> Remove()
+    {
+        <span class="cmt">// Teardown this component</span>
+    }
+}</code></pre>
+            </div>
+            <div class="table-wrap" style="margin-top:16px">
+              <table class="docs-table">
+                <thead><tr><th>Attribute</th><th>Interface</th><th>Lifecycle</th></tr></thead>
+                <tbody>
+                  <tr><td><code>[Client]</code></td><td><code>IClient</code></td><td><code>InstallAsync()</code> / <code>Remove()</code></td></tr>
+                  <tr><td><code>[Manager]</code></td><td><code>IManager</code></td><td><code>InstallAsync()</code> / <code>Remove()</code></td></tr>
+                  <tr><td><code>[Engine]</code></td><td><code>IEngine</code></td><td><code>InstallAsync()</code> / <code>Remove()</code></td></tr>
+                  <tr><td><code>[ResourceAccess]</code></td><td><code>IResourceAccess</code></td><td><code>InstallAsync()</code> / <code>Remove()</code></td></tr>
+                  <tr><td><code>[Resource]</code></td><td><code>IResource</code></td><td><code>InstallAsync()</code> / <code>Remove()</code></td></tr>
+                </tbody>
+              </table>
             </div>
           </div>
 
@@ -385,12 +429,12 @@
           <div class="section-eyebrow">Guides</div>
           <h2 class="section-title">Settings &amp; Enforcement</h2>
           <p class="section-intro">
-            A <code>FrameworkSettings</code> ScriptableObject controls how violations are surfaced. Create it once via the menu and configure per environment.
+            A <code>FrameworkSettings</code> ScriptableObject controls how violations are surfaced. When using the Framework meta-package, the settings asset is created automatically by <code>FrameworkInitializer</code> on domain reload — no manual setup required.
           </p>
 
           <div class="sub-section">
             <h3 class="sub-title">Project Settings panel</h3>
-            <p class="prose">Open <strong>Edit → Project Settings → Architecture</strong>. The settings asset (<code>Assets/Resources/Framework/FrameworkSettings.asset</code>) is created automatically on first visit. From this panel you can set enforcement mode, configure utility assemblies, and run validation inline — all in one place. The panel shows violations with severity filtering, text search, and a detail pane with the rule's <em>Why</em> and a <em>Fix suggestion</em>.</p>
+            <p class="prose">Open <strong>Edit → Project Settings → Framework → Architecture</strong>. The settings asset (<code>Assets/Resources/Framework/FrameworkSettings.asset</code>) is created automatically by the Framework package. From this panel you can set enforcement mode, configure utility assemblies, manage client toggles, and run validation inline — all in one place. The panel shows violations with severity filtering, text search, and a detail pane with the rule's <em>Why</em> and a <em>Fix suggestion</em>.</p>
           </div>
 
           <div class="sub-section">

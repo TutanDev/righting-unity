@@ -71,7 +71,7 @@
       <!-- ── Getting Started Hero ── -->
       <section class="docs-hero" id="getting-started">
         <div class="docs-hero-glow" style="background:radial-gradient(ellipse, var(--util-glow) 0%, transparent 70%)" aria-hidden="true"></div>
-        <span class="docs-hero-badge docs-hero-badge--util">com.tutan.utilities · v0.4.0</span>
+        <span class="docs-hero-badge docs-hero-badge--util">com.tutan.utilities · v1.0.0</span>
         <h1 class="docs-hero-title">Zero-GC Infrastructure<br>for Every Unity Project</h1>
         <p class="docs-hero-desc">
           Five domain-agnostic services that live in the Utility bar of the architecture — available to every layer, allocating nothing on hot paths, optimized for XR frame budgets.
@@ -89,30 +89,26 @@
             <span class="docs-stat-value" style="color:var(--util-color)">XR</span>
             <span class="docs-stat-label">Optimized</span>
           </div>
-          <div>
-            <span class="docs-stat-value" style="color:var(--util-color)">Unity 6</span>
-            <span class="docs-stat-label">Target</span>
-          </div>
         </div>
 
         <div class="callout callout--note" style="margin-top:8px">
           <strong>Zero scene setup</strong>
-          Utilities bootstrap automatically via <code>[RuntimeInitializeOnLoadMethod(BeforeSceneLoad)]</code> — no scene GameObjects required. All host objects are parented under a single persistent <code>[UtilitiesHost]</code> root managed by the package.
+          When using the Framework meta-package, <code>FrameworkBootstrap</code> calls <code>UtilitiesInstaller.Install()</code> automatically before the first scene loads — no scene GameObjects or manual initialization required. All host objects are parented under a single persistent <code>[UtilitiesHost]</code> root.
         </div>
 
         <div class="steps" style="margin-top:28px">
           <div class="step">
             <div class="step-num" style="border-color:var(--util-color);color:var(--util-color)">1</div>
             <div class="step-body">
-              <div class="step-title">Install the package</div>
-              <div class="step-desc">Open <strong>Window → Package Manager</strong>, click <strong>+</strong> → <em>Add package from disk…</em>, navigate to <code>Packages/com.tutan.utilities/package.json</code>.</div>
+              <div class="step-title">Install via Framework</div>
+              <div class="step-desc">Install <code>com.tutan.framework</code> — it pulls in Utilities (along with Architecture and Functional) automatically. <code>FrameworkBootstrap</code> calls <code>UtilitiesInstaller.Install()</code> before the first scene loads.</div>
             </div>
           </div>
           <div class="step">
             <div class="step-num" style="border-color:var(--util-color);color:var(--util-color)">2</div>
             <div class="step-body">
               <div class="step-title">Initialize settings</div>
-              <div class="step-desc">Open <strong>Edit → Project Settings → Utilities</strong>. If no settings asset exists yet, click <strong>Initialize Utilities Settings</strong> — this creates <code>Assets/Resources/Utilities/UtilitiesSettings.asset</code> with all built-in utilities enabled.</div>
+              <div class="step-desc">Open <strong>Edit → Project Settings → Framework → Utilities</strong>. If no settings asset exists yet, click <strong>Initialize Utilities Settings</strong> — this creates <code>Assets/Resources/Utilities/UtilitiesSettings.asset</code> with all built-in utilities enabled.</div>
             </div>
           </div>
           <div class="step">
@@ -216,7 +212,7 @@
 
           <div class="sub-section">
             <h3 class="sub-title">Setup</h3>
-            <p class="prose">Enabled by default in <strong>Project Settings → Utilities</strong>. Configure pool size via the inline <code>TimerSettings</code>. Access via <code>Timer.Instance</code> — available from <code>BeforeSceneLoad</code> onward.</p>
+            <p class="prose">Enabled by default in <strong>Project Settings → Framework → Utilities</strong>. Configure pool size via the inline <code>TimerSettings</code>. Access via <code>Timer.Instance</code> — available from <code>BeforeSceneLoad</code> onward.</p>
           </div>
 
           <div class="sub-section">
@@ -271,7 +267,7 @@
 
           <div class="sub-section">
             <h3 class="sub-title">Setup</h3>
-            <p class="prose">Enabled by default in <strong>Project Settings → Utilities</strong>. Configure pool size via the inline <code>AudioPlayerSettings</code>. Access via <code>AudioPlayer.Instance</code> — available from <code>BeforeSceneLoad</code> onward.</p>
+            <p class="prose">Enabled by default in <strong>Project Settings → Framework → Utilities</strong>. Configure pool size via the inline <code>AudioPlayerSettings</code>. Access via <code>AudioPlayer.Instance</code> — available from <code>BeforeSceneLoad</code> onward.</p>
           </div>
 
           <div class="sub-section">
@@ -327,7 +323,7 @@
 
           <div class="sub-section">
             <h3 class="sub-title">Setup</h3>
-            <p class="prose">Enabled by default in <strong>Project Settings → Utilities</strong>. Configure backend, folder, and pretty-print via the inline <code>PersistenceSettings</code>. Access via <code>PersistenceService.Instance</code>.</p>
+            <p class="prose">Enabled by default in <strong>Project Settings → Framework → Utilities</strong>. Configure backend, folder, and pretty-print via the inline <code>PersistenceSettings</code>. Access via <code>PersistenceService.Instance</code>.</p>
             <div class="table-wrap">
               <table class="docs-table">
                 <thead><tr><th>Setting</th><th>Options</th><th>Description</th></tr></thead>
@@ -448,7 +444,7 @@ Reporter.Enabled = <span class="kw">false</span>;</code></pre>
           <div class="section-eyebrow">Guides</div>
           <h2 class="section-title">Extensibility</h2>
           <p class="section-intro">
-            Any assembly that references <code>com.tutan.utilities</code> can register new utilities that appear in <strong>Project Settings → Utilities</strong> and are installed automatically at runtime — with zero changes to the package itself.
+            Any assembly that references <code>com.tutan.utilities</code> can register new utilities that appear in <strong>Project Settings → Framework → Utilities</strong> and are installed automatically at runtime — with zero changes to the package itself.
           </p>
 
           <div class="sub-section">
@@ -484,7 +480,7 @@ Reporter.Enabled = <span class="kw">false</span>;</code></pre>
     }
 }</code></pre>
             </div>
-            <p class="prose" style="margin-top:12px">After compile: open <strong>Edit → Project Settings → Utilities</strong>. "Heartbeat" appears in the list. Toggle it on — at runtime, <code>[HeartbeatHost]</code> is created under <code>[UtilitiesHost]</code>.</p>
+            <p class="prose" style="margin-top:12px">After compile: open <strong>Edit → Project Settings → Framework → Utilities</strong>. "Heartbeat" appears in the list. Toggle it on — at runtime, <code>[HeartbeatHost]</code> is created under <code>[UtilitiesHost]</code>.</p>
           </div>
 
           <div class="sub-section">
